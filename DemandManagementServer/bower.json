@@ -5,10 +5,17 @@
     "bootstrap": "3.3.7",
     "jquery": "3.2.1",
     "jquery-validation": "1.17.0",
-    "jquery-validation-unobtrusive": "3.2.6"
+    "jquery-validation-unobtrusive": "3.2.6",
+    "admin-lte": "v2.4.2",
+    "jstree": "3.3.4",
+    "bootstrap-paginator": "1.0.2",
+    "select2": "4.0.6-rc.0",
+    "layer": "3.0",
+    "iCheck": "1.0.2"
   },
   "resolutions": {
-    "jquery": "3.2.1",
-    "jquery-validation": "1.17.0"
+    "jquery": "^3.2.1",
+    "jquery-validation": "1.17.0",
+    "jstree": "3.3.4"
   }
 }

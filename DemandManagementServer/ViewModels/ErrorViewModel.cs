@@ -1,6 +1,4 @@
-using System;
-
-namespace DemandManagementServer.Models
+namespace DemandManagementServer.ViewModels
 {
     public class ErrorViewModel
     {
