@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DemandManagementServer.Extensions;
 using DemandManagementServer.Services;
+using DemandManagementServer.ViewModels;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemandManagementServer.Controllers
@@ -16,10 +19,21 @@ namespace DemandManagementServer.Controllers
             _userService = userService;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(LoginViewModel loginViewModel)
         {
-            var user = _userService.CheckUser("admin", "admin");
-            return View();
+            if (ModelState.IsValid)
+            {
+                var user = _userService.CheckUser(loginViewModel.UserName, loginViewModel.Password);
+                if (user != null)
+                {
+                    HttpContext.Session.SetObjectAsJson("CurrentUser",user);
+                    return RedirectToAction("Index", "Management");
+                }
+                ModelState.AddModelError("","用户名或密码错误");
+                ModelState.AddModelError("", "用户名或密码错误2");
+                return View();
+            }
+            return View(loginViewModel);
         }
     }
 }
