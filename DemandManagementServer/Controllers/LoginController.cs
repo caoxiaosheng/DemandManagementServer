@@ -19,6 +19,13 @@ namespace DemandManagementServer.Controllers
             _userService = userService;
         }
 
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
+
+        [HttpPost]
         public IActionResult Index(LoginViewModel loginViewModel)
         {
             if (ModelState.IsValid)
@@ -29,9 +36,16 @@ namespace DemandManagementServer.Controllers
                     HttpContext.Session.SetObjectAsJson("CurrentUser",user);
                     return RedirectToAction("Index", "Management");
                 }
-                ModelState.AddModelError("","用户名或密码错误");
-                ModelState.AddModelError("", "用户名或密码错误2");
+                ViewBag.ErrorInfo = "用户名或密码错误";
                 return View();
+            }
+            foreach (var item in ModelState.Values)
+            {
+                if (item.Errors.Count > 0)
+                {
+                    ViewBag.ErrorInfo = item.Errors[0].ErrorMessage;
+                    break;
+                }
             }
             return View(loginViewModel);
         }

@@ -16,66 +16,92 @@
     <link rel="stylesheet" href="~/lib/iCheck/skins/square/blue.css">
 </head>
 <body class="hold-transition login-page">
-<div class="login-box">
-    <div class="login-logo">
-        <a href="https://uwant.top" target="_blank"><b>需求管理系统</b></a>
-    </div>
-    <!-- /.login-logo -->
-    <div class="login-box-body">
-        <div asp-validation-summary="All" class="text-danger"></div>
-        <form asp-controller="Login" asp-action="Index" method="post">
-            <div class="form-group has-feedback">
-                <input asp-for="UserName" type="text" class="form-control" placeholder="用户名">
-                <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-            <div class="form-group has-feedback">
-                <input asp-for="Password" type="password" class="form-control" placeholder="密码">
-                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-            </div>
-            <div class="row">
-                <div class="col-xs-6">
-                    <div class="checkbox icheck">
-                        <label>
-                            <input asp-for="RememberMe" type="checkbox"> 记住用户
-                        </label>
+    <div class="login-box">
+        <div class="login-logo">
+            <a href="https://uwant.top" target="_blank"><b>需求管理系统</b></a>
+        </div>
+        <!-- /.login-logo -->
+        <div class="login-box-body">
+            <input id="errorInfo" type="hidden" value="@ViewBag.ErrorInfo" />
+            <form asp-controller="Login" asp-action="Index" method="post" onsubmit="onSubmit()">
+                <div class="form-group has-feedback">
+                    <input asp-for="UserName" type="text" class="form-control" placeholder="用户名">
+                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                </div>
+                <div class="form-group has-feedback">
+                    <input asp-for="Password" type="password" class="form-control" placeholder="密码">
+                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <div class="checkbox icheck">
+                            <label>
+                                <input asp-for="RememberMe" type="checkbox"> 记住用户
+                            </label>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-xs-6">
+                        <div class="checkbox pull-right">
+                            <a href="#" onclick="showTip()">忘记密码</a>
+                            <span>&nbsp;/&nbsp;</span>
+                            <a href="#" onclick="showTip()">注册</a>
+                        </div>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button id="btnLogin" type="submit" class="btn btn-danger btn-block btn-flat">登 录</button>
                     </div>
                 </div>
-                <!-- /.col -->
-                <div class="col-xs-6">
-                    <div class="checkbox pull-right">
-                        <a href="#" onclick="showTip()">忘记密码</a>
-                        <span>&nbsp;/&nbsp;</span>
-                        <a href="#" onclick="showTip()" >注册</a>
-                    </div>
-                </div>
-                <!-- /.col -->
-            </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <button type="submit" class="btn btn-danger btn-block btn-flat">登 录</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <!-- /.login-box-body -->
     </div>
-    <!-- /.login-box-body -->
-</div>
-<!-- /.login-box -->
-<script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-<script src="~/lib/iCheck/icheck.js"></script>
-<script>
-    $(function() {
-        $('input').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_square-blue',
-            increaseArea: '20%' // optional
+    <!-- /.login-box -->
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/iCheck/icheck.js"></script>
+    <script src="~/lib/layer/build/layer.js"></script>
+    <script src="~/lib/jquery.cookie/jquery.cookie.js"></script>
+    <script>
+        $(function () {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%' // optional
+            });
+            //显示登陆错误
+            if ($("#errorInfo").val()) {
+                layer.msg($("#errorInfo").val(), { time: 2000 });
+            }
+            //读取记录勾选框状态
+            if ($.cookie("userName") != undefined) {
+                $("#RememberMe").iCheck('check');
+            } else {
+                $("#RememberMe").iCheck('uncheck');
+            }
+            //设置默认值
+            if ($("#RememberMe").is(":checked")) {
+                $("#UserName").val($.cookie("userName"));
+                $("#Password").val($.cookie("password"));
+            }
         });
-    });
-
-    function showTip() {
-        alert("请联系管理员");
-    }
-</script>
+        //注册修改密码暂不支持
+        function showTip() {
+            layer.msg("请联系管理员", { time: 500 });
+        }
+        //登陆记录/清除cookies
+        function onSubmit() {
+            if ($("#RememberMe").is(":checked")) {
+                $.cookie("userName", $("#UserName").val());
+                $.cookie("password", $("#Password").val());
+            } else {
+                $.removeCookie("userName");
+                $.removeCookie("password");
+            }
+        }
+    </script>
 </body>
 </html>
