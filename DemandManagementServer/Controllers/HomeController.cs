@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using DemandManagementServer.Models;
 using DemandManagementServer.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DemandManagementServer.Controllers
 {

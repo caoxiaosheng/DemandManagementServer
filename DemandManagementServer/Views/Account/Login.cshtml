@@ -23,7 +23,7 @@
         <!-- /.login-logo -->
         <div class="login-box-body">
             <input id="errorInfo" type="hidden" value="@ViewBag.ErrorInfo" />
-            <form asp-controller="Login" asp-action="Index" method="post" onsubmit="onSubmit()">
+            <form asp-controller="Account" asp-action="Login" method="post" onsubmit="onSubmit()">
                 <div class="form-group has-feedback">
                     <input asp-for="UserName" type="text" class="form-control" placeholder="用户名">
                     <span class="glyphicon glyphicon-user form-control-feedback"></span>

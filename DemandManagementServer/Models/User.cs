@@ -27,7 +27,7 @@ namespace DemandManagementServer.Models
         /// <summary>
         /// 邮箱地址
         /// </summary>
-        public string EMail { get; set; }
+        public string Email { get; set; }
 
         /// <summary>
         /// 手机号
