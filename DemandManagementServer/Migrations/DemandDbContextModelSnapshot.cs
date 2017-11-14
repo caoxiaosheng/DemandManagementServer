@@ -20,6 +20,26 @@ namespace DemandManagementServer.Migrations
                 .HasAnnotation("ProductVersion", "2.0.0-rtm-26452")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("DemandManagementServer.Models.Menu", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Code");
+
+                    b.Property<string>("Icon");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Remarks");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Menus");
+                });
+
             modelBuilder.Entity("DemandManagementServer.Models.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -36,6 +56,19 @@ namespace DemandManagementServer.Migrations
                     b.ToTable("Roles");
                 });
 
+            modelBuilder.Entity("DemandManagementServer.Models.RoleMenu", b =>
+                {
+                    b.Property<int>("RoleId");
+
+                    b.Property<int>("MenuId");
+
+                    b.HasKey("RoleId", "MenuId");
+
+                    b.HasIndex("MenuId");
+
+                    b.ToTable("RoleMenus");
+                });
+
             modelBuilder.Entity("DemandManagementServer.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -43,7 +76,7 @@ namespace DemandManagementServer.Migrations
 
                     b.Property<DateTime?>("CreateTime");
 
-                    b.Property<string>("EMail");
+                    b.Property<string>("Email");
 
                     b.Property<int>("IsDeleted");
 
@@ -61,6 +94,10 @@ namespace DemandManagementServer.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserName")
+                        .IsUnique()
+                        .HasFilter("[UserName] IS NOT NULL");
+
                     b.ToTable("Users");
                 });
 
@@ -74,18 +111,31 @@ namespace DemandManagementServer.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRoles");
+                });
+
+            modelBuilder.Entity("DemandManagementServer.Models.RoleMenu", b =>
+                {
+                    b.HasOne("DemandManagementServer.Models.Menu", "Menu")
+                        .WithMany()
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DemandManagementServer.Models.Role", "Role")
+                        .WithMany("RoleMenus")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DemandManagementServer.Models.UserRole", b =>
                 {
                     b.HasOne("DemandManagementServer.Models.Role", "Role")
-                        .WithMany("Users")
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DemandManagementServer.Models.User", "User")
-                        .WithMany("Roles")
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DemandManagementServer.DAL;
 using DemandManagementServer.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemandManagementServer.Services
 {
@@ -18,7 +19,7 @@ namespace DemandManagementServer.Services
         
         public User CheckUser(string userName, string password)
         {
-            return _demandDbContext.Users.FirstOrDefault(it => it.UserName == userName && it.Password == password);
+            return _demandDbContext.Users.Include(user=>user.UserRoles).ThenInclude(item=>item.Role).FirstOrDefault(it => it.UserName == userName && it.Password == password);
         }
     }
 }

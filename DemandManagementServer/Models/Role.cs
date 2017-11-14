@@ -15,6 +15,8 @@ namespace DemandManagementServer.Models
 
         public string Remarks { get; set; }
 
-        public virtual ICollection<UserRole> Users { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
+
+        public virtual ICollection<RoleMenu> RoleMenus { get; set; }
     }
 }

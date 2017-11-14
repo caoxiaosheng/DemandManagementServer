@@ -38,7 +38,7 @@ namespace DemandManagementServer.Controllers
                     claimIdentity.AddClaim(new Claim(ClaimTypes.Name, user.UserName));
                     //claimIdentity.AddClaim(new Claim(ClaimTypes.Email, user.Email));
                     //claimIdentity.AddClaim(new Claim(ClaimTypes.MobilePhone, user.MobileNumber));
-                    foreach (var role in user.Roles)
+                    foreach (var role in user.UserRoles)
                     {
                         claimIdentity.AddClaim(new Claim(ClaimTypes.Role, role.Role.Name));
                     }
