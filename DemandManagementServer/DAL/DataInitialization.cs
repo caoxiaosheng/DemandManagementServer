@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DemandManagementServer.Models;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DemandManagementServer.DAL
@@ -21,13 +23,17 @@ namespace DemandManagementServer.DAL
             //    {
             //        UserName = "admin",
             //        Password = "admin",
-            //        CreateTime = DateTime.Now
+            //        CreateTime = DateTime.Now,
+            //        UserRoles = new List<UserRole>()
+            //        {
+            //            new UserRole(){Role =new Role()
+            //            {
+            //                Name = "管理员",
+            //                CreateTime = DateTime.Now
+            //            }}
+            //        }
             //    });
-            //    dbcontext.Roles.Add(new Role()
-            //    {
-            //        Name = "管理员",
-            //        CreateTime = DateTime.Now
-            //    });
+            //    dbcontext.Roles.First().RoleMenus = new List<RoleMenu>() { new RoleMenu() { Menu = new Menu() { Code = "Menu", Name = "功能管理", Url = "/Menu/Index" } }, new RoleMenu() { Menu = new Menu() { Code = "Role", Name = "角色管理", Url = "/Role/Index" } } };
             //    dbcontext.SaveChanges();
             //}
         }

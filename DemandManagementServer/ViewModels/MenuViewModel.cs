@@ -4,16 +4,16 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DemandManagementServer.Models
+namespace DemandManagementServer.ViewModels
 {
-    public class Menu
+    public class MenuViewModel
     {
         public int Id { get; set; }
 
         /// <summary>
         /// 菜单名称
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "功能名称不能为空")]
         public string Name { get; set; }
 
         /// <summary>

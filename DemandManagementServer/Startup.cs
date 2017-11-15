@@ -33,6 +33,7 @@ namespace DemandManagementServer
             services.AddDbContext<DemandDbContext>(option=>option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IMenuService, MenuService>();
 
             services.AddMvc(options =>
             {

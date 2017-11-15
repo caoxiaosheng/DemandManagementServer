@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using DemandManagementServer.Models;
+using DemandManagementServer.ViewModels;
 
 namespace DemandManagementServer.DAL
 {
@@ -11,7 +9,7 @@ namespace DemandManagementServer.DAL
         {
             AutoMapper.Mapper.Initialize(cfg =>
             {
-                
+                cfg.CreateMap<Menu, MenuViewModel>();
             });
         }
     }

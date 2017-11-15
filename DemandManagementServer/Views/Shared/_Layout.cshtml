@@ -253,7 +253,7 @@
             <!-- Main content -->
             <section class="content">
                 <!--当创建基于_Layout.cshtml布局页面的视图时，视图的内容会和布局页面合并，视图的内容会渲染呈现在@RenderBody()处-->
-
+                @RenderBody()
             </section>
             <!-- /.content -->
         </div>
@@ -341,10 +341,11 @@
     <script src="~/lib/jquery/dist/jquery.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     <script src="~/lib/admin-lte/dist/js/adminlte.js"></script>
-    <script src="~/lib/bootstrap-paginator/bootstrap-paginator.jquery.json"></script>
+    <script src="~/lib/bootstrap-paginator/build/bootstrap-paginator.min.js"></script>
     <script src="~/lib/layer/build/layer.js"></script>
     <script src="~/lib/jstree/dist/jstree.js"></script>
     <script src="~/lib/select2/dist/js/select2.js"></script>
     <script src="~/lib/select2/dist/js/i18n/zh-CN.js"></script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>
