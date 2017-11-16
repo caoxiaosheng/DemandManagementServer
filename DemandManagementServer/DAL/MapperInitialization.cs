@@ -10,6 +10,7 @@ namespace DemandManagementServer.DAL
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Menu, MenuViewModel>();
+                cfg.CreateMap<MenuViewModel, Menu>();
             });
         }
     }

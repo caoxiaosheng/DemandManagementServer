@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DemandManagementServer.Models
 {
@@ -11,28 +7,28 @@ namespace DemandManagementServer.Models
         public int Id { get; set; }
 
         /// <summary>
-        /// 菜单名称
+        /// 功能名称
         /// </summary>
         [Required]
         public string Name { get; set; }
 
         /// <summary>
-        /// 菜单编码
+        /// 功能编码
         /// </summary>
         public string Code { get; set; }
 
         /// <summary>
-        /// 菜单地址
+        /// 功能地址
         /// </summary>
         public string Url { get; set; }
 
         /// <summary>
-        /// 菜单图标
+        /// 功能图标
         /// </summary>
         public string Icon { get; set; }
 
         /// <summary>
-        /// 菜单备注
+        /// 功能备注
         /// </summary>
         public string Remarks { get; set; }
     }

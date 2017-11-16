@@ -38,6 +38,8 @@ namespace DemandManagementServer.DAL
                 .HasForeignKey(rolemenu => rolemenu.RoleId).IsRequired();
 
             modelBuilder.Entity<User>().HasIndex(user => user.UserName).IsUnique();
+            modelBuilder.Entity<Menu>().HasIndex(menu => menu.Name).IsUnique();
+
             base.OnModelCreating(modelBuilder);
         }
     }

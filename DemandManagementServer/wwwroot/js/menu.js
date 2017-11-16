@@ -1,6 +1,9 @@
-﻿$(function() {
-    $("#btnAdd").click(add());
-    loadMenus(1, 10);
+﻿$(function () {
+    $("#checkAll").click(function () { checkAll(this); });
+    $("#btnAdd").click(function () { add(); });
+    $("#btnSave").click(function () { save(); });
+    $("#btnDelete").click(function() { deleteMulti(); });
+    loadMenus(1, 15);
 });
 
 function loadMenus(startPage, pageSize) {
@@ -48,6 +51,71 @@ function loadMenus(startPage, pageSize) {
     });
 }
 
+function checkAll(checkBox) {
+    $(".checkboxs").each(function (index, elem) { $(elem).prop("checked", checkBox.checked) });
+}
+
 function add() {
+    $("#Title").text("新增功能");
+    $("#Action").val("AddMenu");
+    $("#Code").val("");
+    $("#Name").val("");
+    $("#Url").val("");
+    $("#Icon").val("");
+    $("#Remarks").val("");
+    //弹出新增窗体
+    $("#addMenu").modal("show");
+}
+
+function edit(id) {
+    $("#Title").text("编辑功能");
+    $("#Action").val("EditMenu");
+    $.ajax({
+        type: "post",
+        url: "/Menu/GetMenuById?id=" + id,
+        success:function(data) {
+            $("#Id").val(data.id);
+            $("#Code").val(data.code);
+            $("#Name").val(data.name);
+            $("#Url").val(data.url);
+            $("#Icon").val(data.icon);
+            $("#Remarks").val(data.remarks);
+            //弹出新增窗体
+            $("#addMenu").modal("show");
+        }
+    });
+}
+
+function save() {
+    var postData = {
+        "menuViewModel": {
+            "Id": $("#Id").val(),
+            "Name": $("#Name").val(),
+            "Code": $("#Code").val(),
+            "Url": $("#Url").val(),
+            "Icon": $("#Icon").val(),
+            "Remarks": $("#Remarks").val()
+        }
+    };
+    $.ajax({
+        type: "Post",
+        url: "/Menu/"+$("#Action").val(),
+        data: postData,
+        success: function (data) {
+            if (data.result ===true) {
+                loadMenus(1, 15);
+                $("#addMenu").modal("hide");
+            } else {
+                layer.tips(data.reason, "#btnSave");
+            };
+        }
+    });
+}
+
+function deleteSingle(id) {
+    
+}
+
+function deleteMulti() {
     
 }
