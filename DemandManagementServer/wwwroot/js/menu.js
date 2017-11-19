@@ -2,23 +2,23 @@
     $("#checkAll").click(function () { checkAll(this); });
     $("#btnAdd").click(function () { add(); });
     $("#btnSave").click(function () { save(); });
-    $("#btnDelete").click(function() { deleteMulti(); });
+    $("#btnDelete").click(function () { deleteMulti(); });
     loadMenus(1, 15);
 });
 
 function loadMenus(startPage, pageSize) {
     $("#tableBody").html("");
-    $("#checkAll").prop("checkd",false);
+    $("#checkAll").prop("checked", false);
     $.ajax({
         type: "GET",
         url: "/Menu/GetMenus?" +
-            "startPage=" +
-            startPage +
-            "&pageSize=" +
-            pageSize,
-        success: function(data) {
+        "startPage=" +
+        startPage +
+        "&pageSize=" +
+        pageSize,
+        success: function (data) {
             $.each(data.menus,
-                function(i, item) {
+                function (i, item) {
                     var tr = "<tr>";
                     tr += "<td align='center'><input type='checkbox' class='checkboxs' value='" + item.id + "'/></td>";
                     tr += "<td>" + item.name + "</td>";
@@ -41,7 +41,7 @@ function loadMenus(startPage, pageSize) {
                     currentPage: startPage, //当前页
                     numberOfPages: data.rowsCount, //总数
                     totalPages: data.pageCount, //总页数
-                    onPageChanged: function(event, oldPage, newPage) { //页面切换事件
+                    onPageChanged: function (event, oldPage, newPage) { //页面切换事件
                         loadMenus(newPage, pageSize);
                     }
                 };
@@ -73,7 +73,7 @@ function edit(id) {
     $.ajax({
         type: "post",
         url: "/Menu/GetMenuById?id=" + id,
-        success:function(data) {
+        success: function (data) {
             $("#Id").val(data.id);
             $("#Code").val(data.code);
             $("#Name").val(data.name);
@@ -99,10 +99,10 @@ function save() {
     };
     $.ajax({
         type: "Post",
-        url: "/Menu/"+$("#Action").val(),
+        url: "/Menu/" + $("#Action").val(),
         data: postData,
         success: function (data) {
-            if (data.result ===true) {
+            if (data.result === true) {
                 loadMenus(1, 15);
                 $("#addMenu").modal("hide");
             } else {
@@ -113,9 +113,42 @@ function save() {
 }
 
 function deleteSingle(id) {
-    
-}
+    layer.confirm("是否删除", { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/Menu/DeleteSingle",
+                data: { "id": id },
+                success: function () {
+                    loadMenus(1, 15);
+                    layer.closeAll();
+                }
+            });
+        })
+};
 
 function deleteMulti() {
-    
+    var ids = new Array();
+    $(".checkboxs").each(function (index, elem) {
+        if ($(elem).prop("checked") === true) {
+            ids.push($(elem).val());
+        }
+    });
+    if (ids.length === 0) {
+        layer.alert("请先选择删除项");
+        return;
+    }
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/Menu/DeleteMulti",
+                data: { "ids": ids },
+                success: function () {
+                    loadMenus(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
 }

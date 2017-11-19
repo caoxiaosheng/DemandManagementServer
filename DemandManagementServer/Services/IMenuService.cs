@@ -16,5 +16,7 @@ namespace DemandManagementServer.Services
         void DeleteMenu(int id);
 
         void DeleteMenus(List<int> ids);
+
+        List<MenuViewModel> GetAllMenus();
     }
 }

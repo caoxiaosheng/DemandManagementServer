@@ -60,12 +60,32 @@ namespace DemandManagementServer.Services
         
         public void DeleteMenu(int id)
         {
-            throw new System.NotImplementedException();
+            var menu = _demandDbContext.Menus.FirstOrDefault(item => item.Id == id);
+            if (menu == null)
+            {
+                return;
+            }
+            _demandDbContext.Menus.Remove(menu);
+            _demandDbContext.SaveChanges();
         }
 
         public void DeleteMenus(List<int> ids)
         {
-            throw new System.NotImplementedException();
+            foreach (var id in ids)
+            {
+                var menu = _demandDbContext.Menus.FirstOrDefault(item => item.Id == id);
+                if (menu != null)
+                {
+                    _demandDbContext.Menus.Remove(menu);
+                }
+            }
+            _demandDbContext.SaveChanges();
+        }
+
+        public List<MenuViewModel> GetAllMenus()
+        {
+            var menus = _demandDbContext.Menus.OrderBy(item => item.Id);
+            return AutoMapper.Mapper.Map<List<MenuViewModel>>(menus);
         }
 
         private void EntityToEntity<T>(T pTargetObjSrc, T pTargetObjDest)

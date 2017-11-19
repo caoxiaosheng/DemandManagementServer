@@ -58,5 +58,31 @@ namespace DemandManagementServer.Controllers
                 reason = reason
             });
         }
+
+        public void DeleteSingle(int id)
+        {
+            _menuService.DeleteMenu(id);
+        }
+
+        public void DeleteMulti(List<int> ids)
+        {
+            _menuService.DeleteMenus(ids);
+        }
+
+        public IActionResult GetAllMenusOfTree()
+        {
+            var menus = _menuService.GetAllMenus();
+            var treeViewModels=new List<TreeVIewModel>();
+            foreach (var menu in menus)
+            {
+                treeViewModels.Add(new TreeVIewModel()
+                {
+                    Id = menu.Id.ToString(),
+                    Text = menu.Name,
+                    Parent = "#"
+                });
+            }
+            return Json(treeViewModels);
+        }
     }
 }

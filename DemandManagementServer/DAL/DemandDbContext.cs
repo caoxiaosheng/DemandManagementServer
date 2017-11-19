@@ -37,6 +37,7 @@ namespace DemandManagementServer.DAL
             modelBuilder.Entity<RoleMenu>().HasOne(rolemenu => rolemenu.Role).WithMany(role => role.RoleMenus)
                 .HasForeignKey(rolemenu => rolemenu.RoleId).IsRequired();
 
+            modelBuilder.Entity<Role>().HasIndex(role => role.Name).IsUnique();
             modelBuilder.Entity<User>().HasIndex(user => user.UserName).IsUnique();
             modelBuilder.Entity<Menu>().HasIndex(menu => menu.Name).IsUnique();
 
