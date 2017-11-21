@@ -28,5 +28,11 @@ namespace DemandManagementServer.Controllers
                 pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize)
             });
         }
+
+        public IActionResult GetMenuIdsByRoleId(int roleId)
+        {
+            var menuIds = _roleService.GetMenuIdsByRoleId(roleId);
+            return Json(menuIds);
+        }
     }
 }

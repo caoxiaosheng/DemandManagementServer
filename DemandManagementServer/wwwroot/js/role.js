@@ -1,10 +1,10 @@
-﻿$(function() {
+﻿$(function () {
     $("#checkAll").click(function () { checkAll(this); });
     $("#btnAdd").click(function () { add(); });
     $("#btnSave").click(function () { save(); });
     $("#btnDelete").click(function () { deleteMulti(); });
     initTree();
-    loadRoles(1,15);
+    loadRoles(1, 15);
 });
 
 //加载树
@@ -19,7 +19,7 @@ function initTree() {
                     'data': data, //绑定JsTree数据
                     "multiple": true //是否多选
                 },
-                "plugins": [ "types", "wholerow", "checkbox",], //配置信息
+                "plugins": ["types", "wholerow", "checkbox",], //配置信息
                 "checkbox": {
                     "keep_selected_style": false
                 }
@@ -38,9 +38,9 @@ function loadRoles(startPage, pageSize) {
     $.ajax({
         type: "GET",
         url: "/Role/GetRoles?startPage=" + startPage + "&pageSize=" + pageSize,
-        success: function(data) {
+        success: function (data) {
             $.each(data.roles,
-                function(i, item) {
+                function (i, item) {
                     var tr = "<tr>";
                     tr += "<td align='center'><input type='checkbox' class='checkboxs' value='" + item.id + "'/></td>";
                     tr += "<td>" + item.name + "</td>";
@@ -60,35 +60,35 @@ function loadRoles(startPage, pageSize) {
                     currentPage: startPage, //当前页
                     numberOfPages: data.rowsCount, //总数
                     totalPages: data.pageCount, //总页数
-                    onPageChanged: function(event, oldPage, newPage) { //页面切换事件
+                    onPageChanged: function (event, oldPage, newPage) { //页面切换事件
                         loadRoles(newPage, pageSize);
                     }
                 }
                 elment.bootstrapPaginator(options); //分页插件初始化
             }
-            $("table > tbody > tr").click(function() {
+            $("table > tbody > tr").click(function () {
                 $("table > tbody > tr").removeAttr("style");
                 $(this).attr("style", "background-color:#beebff");
-                var selectedRole = $(this).find("input").val();
-                loadMenusByRole(selectedRole);
+                var selectedRoleId = $(this).find("input").val();
+                loadMenusByRoleId(selectedRoleId);
             });
         }
     });
 }
 
 //根据选中角色加载功能权限
-function loadMenusByRole(selectedRole) {
+function loadMenusByRoleId(selectedRoleId) {
     $.ajax({
         type: "Get",
-        url: "/Role/GetMenusByRole?roleId=" + selectedRole + "&_t=" + new Date().getTime(),
+        url: "/Role/GetMenuIdsByRoleId?roleId=" + selectedRoleId,
         success: function (data) {
-            $("#treeDiv").find("li").each(function() {
-                $("#treeDiv").jstree("uncheck_node", $(this));
-                if (data.indexOf($(this).attr("id")) != -1) {
-                    $("#treeDiv").jstree("check_node", $(this));
+            $("#menuTree").find("li").each(function () {
+                if (data.indexOf(Number($(this).attr("id"))) === -1) {
+                    $("#menuTree").jstree("uncheck_node", $(this));
+                } else {
+                    $("#menuTree").jstree("check_node", $(this));
                 }
             });
         }
     });
 };
-

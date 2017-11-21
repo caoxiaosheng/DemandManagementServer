@@ -20,5 +20,11 @@ namespace DemandManagementServer.Services
             var roles = _demandDbContext.Roles.OrderBy(item => item.Id).Skip((startPage - 1) * pageSize).Take(pageSize).ToList();
             return AutoMapper.Mapper.Map<List<RoleViewModel>>(roles);
         }
+
+        public List<int> GetMenuIdsByRoleId(int roleId)
+        {
+            var menuIds = _demandDbContext.RoleMenus.Where(item => item.RoleId == roleId).Select(item=>item.MenuId).ToList();
+            return menuIds;
+        }
     }
 }

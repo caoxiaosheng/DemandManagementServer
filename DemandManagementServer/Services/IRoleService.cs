@@ -9,5 +9,7 @@ namespace DemandManagementServer.Services
     public interface IRoleService
     {
         List<RoleViewModel> GetRoles(int startPage, int pageSize, out int rowCount);
+
+        List<int> GetMenuIdsByRoleId(int roleId);
     }
 }
