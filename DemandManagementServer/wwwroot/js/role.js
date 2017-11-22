@@ -27,6 +27,7 @@ function initTree() {
             $("#menuTree").on("ready.jstree", function (e, data) {   //树创建完成事件
                 data.instance.open_all();    //展开所有节点
             });
+            initialRoleSelect(data);
         }
     });
 }
@@ -92,3 +93,75 @@ function loadMenusByRoleId(selectedRoleId) {
         }
     });
 };
+
+function initialRoleSelect(data) {
+    $("#Menu").select2();
+    var option = "";
+    $.each(data,
+        function(i, item) {
+            option += "<option value='" + item.id + "'>" + item.text + "</option>";
+        });
+    $("#Menu").html(option);
+}
+
+function checkAll(checkBox) {
+    $(".checkboxs").each(function (index, elem) { $(elem).prop("checked", checkBox.checked) });
+}
+
+function add() {
+    $("#Title").text("新增角色");
+    $("#Action").val("AddRole");
+    $("#Id").val(0);
+    $("#Name").val("");
+    $("#Menu").select2("val", "");
+    $("#Remarks").val("");
+    //弹出新增窗体
+    $("#addRole").modal("show");
+}
+
+function edit(id) {
+    $("#Title").text("编辑角色");
+    $("#Action").val("EditRole");
+    $.ajax({
+        type: "post",
+        url: "/Role/GetRoleById?id=" + id,
+        success: function (data) {
+            $("#Id").val(data.id);
+            $("#Name").val(data.name);
+            $("#Remarks").val(data.remarks);
+            if (data.roleMenus.length > 0) {
+                var menuIds = [];
+                $.each(data.roleMenus, function (i, item) {
+                    menuIds.push(item.menuId.toString());
+                });
+                $("#Menu").val(menuIds).trigger('change');
+            }
+            //弹出新增窗体
+            $("#addRole").modal("show");
+        }
+    });
+}
+
+function save() {
+    var postData = {
+        "roleViewModel": {
+            "Id": $("#Id").val(),
+            "Name": $("#Name").val(),
+            "Remarks": $("#Remarks").val()
+        },
+        "menuIds": $("#Menu").val().toString()
+    };
+    $.ajax({
+        type: "Post",
+        url: "/Role/" + $("#Action").val(),
+        data: postData,
+        success: function (data) {
+            if (data.result === true) {
+                loadRoles(1, 15);
+                $("#addRole").modal("hide");
+            } else {
+                layer.tips(data.reason, "#btnSave");
+            };
+        }
+    });
+}

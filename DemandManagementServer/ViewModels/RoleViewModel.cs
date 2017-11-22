@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DemandManagementServer.ViewModels
 {
@@ -17,5 +16,7 @@ namespace DemandManagementServer.ViewModels
 
         public string Remarks { get; set; }
 
+        [BindNever]
+        public List<RoleMenuViewModel> RoleMenus { get; set; }
     }
 }

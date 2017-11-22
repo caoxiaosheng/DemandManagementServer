@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DemandManagementServer.DAL;
+using DemandManagementServer.Extensions;
+using DemandManagementServer.Models;
 using DemandManagementServer.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemandManagementServer.Services
 {
@@ -26,5 +30,50 @@ namespace DemandManagementServer.Services
             var menuIds = _demandDbContext.RoleMenus.Where(item => item.RoleId == roleId).Select(item=>item.MenuId).ToList();
             return menuIds;
         }
+
+        public RoleViewModel GetRoleById(int id)
+        {
+            var role = _demandDbContext.Roles.Include(item => item.RoleMenus).FirstOrDefault(item => item.Id == id);
+            return AutoMapper.Mapper.Map<RoleViewModel>(role);
+        }
+
+        public bool AddRole(RoleViewModel roleViewModel, out string reason)
+        {
+            reason = string.Empty;
+            var newRole = AutoMapper.Mapper.Map<Role>(roleViewModel);
+            var role = _demandDbContext.Menus.FirstOrDefault(item => item.Name == newRole.Name);
+            if (role != null)
+            {
+                reason = "已存在名称：" + newRole.Name;
+                return false;
+            }
+            newRole.CreateTime=DateTime.Now;
+            _demandDbContext.Roles.Add(newRole);
+            _demandDbContext.SaveChanges();
+            return true;
+        }
+
+        public bool UpdateRole(RoleViewModel roleViewModel, out string reason)
+        {
+            reason = string.Empty;
+            var role = _demandDbContext.Roles.Include(item=>item.RoleMenus).FirstOrDefault(item => item.Id == roleViewModel.Id);
+            if (role == null)
+            {
+                reason = "未查找到该角色";
+                return false;
+            }
+            foreach (var rolemenu in role.RoleMenus)
+            {
+                _demandDbContext.RoleMenus.Remove(rolemenu);
+            }
+            _demandDbContext.SaveChanges();
+            var newRole = AutoMapper.Mapper.Map<Role>(roleViewModel);
+            EntityUpdateHelper.EntityToEntity(newRole, role);
+            role.CreateTime=DateTime.Now;
+            _demandDbContext.SaveChanges();
+            return true;
+        }
+
+        
     }
 }

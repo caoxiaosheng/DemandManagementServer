@@ -58,6 +58,7 @@ function checkAll(checkBox) {
 function add() {
     $("#Title").text("新增功能");
     $("#Action").val("AddMenu");
+    $("#Id").val(0);
     $("#Code").val("");
     $("#Name").val("");
     $("#Url").val("");

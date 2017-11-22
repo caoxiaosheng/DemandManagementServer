@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DemandManagementServer.Extensions;
 using DemandManagementServer.Services;
 using DemandManagementServer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -41,6 +42,14 @@ namespace DemandManagementServer.Controllers
 
         public IActionResult AddMenu(MenuViewModel menuViewModel)
         {
+            if (ModelState.IsValid==false)
+            {
+                return Json(new
+                {
+                    result = false,
+                    reason = ModelState.GetErrorMessage()
+                });
+            }
             var result = _menuService.AddMenu(menuViewModel,out var reason);
             return Json(new
             {
@@ -51,6 +60,14 @@ namespace DemandManagementServer.Controllers
 
         public IActionResult EditMenu(MenuViewModel menuViewModel)
         {
+            if (ModelState.IsValid == false)
+            {
+                return Json(new
+                {
+                    result = false,
+                    reason = ModelState.GetErrorMessage()
+                });
+            }
             var result = _menuService.UpdateMenu(menuViewModel, out var reason);
             return Json(new
             {

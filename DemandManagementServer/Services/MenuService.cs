@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using DemandManagementServer.DAL;
+using DemandManagementServer.Extensions;
 using DemandManagementServer.Models;
 using DemandManagementServer.ViewModels;
 
@@ -53,7 +54,7 @@ namespace DemandManagementServer.Services
                 return false;
             }
             var newMenu = AutoMapper.Mapper.Map<Menu>(menuViewModel);
-            EntityToEntity(newMenu, menu);
+            EntityUpdateHelper.EntityToEntity(newMenu, menu);
             _demandDbContext.SaveChanges();
             return true;
         }
@@ -86,14 +87,6 @@ namespace DemandManagementServer.Services
         {
             var menus = _demandDbContext.Menus.OrderBy(item => item.Id);
             return AutoMapper.Mapper.Map<List<MenuViewModel>>(menus);
-        }
-
-        private void EntityToEntity<T>(T pTargetObjSrc, T pTargetObjDest)
-        {
-            foreach (var mItem in typeof(T).GetProperties())
-            {
-                mItem.SetValue(pTargetObjDest, mItem.GetValue(pTargetObjSrc, new object[] { }), null);
-            }
         }
     }
 }

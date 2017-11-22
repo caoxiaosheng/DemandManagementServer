@@ -13,6 +13,8 @@ namespace DemandManagementServer.DAL
                 cfg.CreateMap<MenuViewModel, Menu>();
                 cfg.CreateMap<Role, RoleViewModel>();
                 cfg.CreateMap<RoleViewModel, Role>();
+                cfg.CreateMap<RoleMenu, RoleMenuViewModel>();
+                cfg.CreateMap<RoleMenuViewModel, RoleMenu>();
             });
         }
     }
