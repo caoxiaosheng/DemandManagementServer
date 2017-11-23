@@ -57,12 +57,12 @@ namespace DemandManagementServer.Controllers
             try
             {
                 List<RoleMenuViewModel> roleMenuViewModels = new List<RoleMenuViewModel>();
-                foreach (var menuId in menuIds.Split(','))
+                foreach (var id in menuIds.Select2StringToList())
                 {
                     roleMenuViewModels.Add(new RoleMenuViewModel()
                     {
                         RoleId = roleViewModel.Id,
-                        MenuId = int.Parse(menuId)
+                        MenuId = id
                     });
                 }
                 roleViewModel.RoleMenus = roleMenuViewModels;
@@ -96,12 +96,12 @@ namespace DemandManagementServer.Controllers
             try
             {
                 List<RoleMenuViewModel> roleMenuViewModels = new List<RoleMenuViewModel>();
-                foreach (var menuId in menuIds.Split(','))
+                foreach (var id in menuIds.Select2StringToList())
                 {
                     roleMenuViewModels.Add(new RoleMenuViewModel()
                     {
                         RoleId = roleViewModel.Id,
-                        MenuId = int.Parse(menuId)
+                        MenuId = id
                     });
                 }
                 roleViewModel.RoleMenus = roleMenuViewModels;

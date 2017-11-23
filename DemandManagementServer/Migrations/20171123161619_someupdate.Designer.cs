@@ -11,9 +11,10 @@ using System;
 namespace DemandManagementServer.Migrations
 {
     [DbContext(typeof(DemandDbContext))]
-    partial class DemandDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171123161619_someupdate")]
+    partial class someupdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

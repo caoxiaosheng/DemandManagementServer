@@ -62,10 +62,11 @@ namespace DemandManagementServer.Services
                 reason = "未查找到该角色";
                 return false;
             }
-            foreach (var rolemenu in role.RoleMenus)
-            {
-                _demandDbContext.RoleMenus.Remove(rolemenu);
-            }
+            //foreach (var rolemenu in role.RoleMenus)
+            //{
+            //    _demandDbContext.RoleMenus.Remove(rolemenu);
+            //}
+            role.RoleMenus.Clear();
             _demandDbContext.SaveChanges();
             var newRole = AutoMapper.Mapper.Map<Role>(roleViewModel);
             EntityUpdateHelper.EntityToEntity(newRole, role);
