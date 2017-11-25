@@ -121,5 +121,15 @@ namespace DemandManagementServer.Controllers
                 });
             }
         }
+
+        public void DeleteSingle(int id)
+        {
+            _roleService.DeleteRole(id);
+        }
+
+        public void DeleteMulti(List<int> ids)
+        {
+            _roleService.DeleteRoles(ids);
+        }
     }
 }

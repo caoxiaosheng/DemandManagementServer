@@ -17,5 +17,9 @@ namespace DemandManagementServer.Services
         bool AddRole(RoleViewModel roleViewModel, out string reason);
 
         bool UpdateRole(RoleViewModel roleViewModel, out string reason);
+
+        void DeleteRole(int id);
+
+        void DeleteRoles(List<int> ids);
     }
 }

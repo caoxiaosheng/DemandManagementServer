@@ -41,7 +41,7 @@ namespace DemandManagementServer.Services
         {
             reason = string.Empty;
             var newRole = AutoMapper.Mapper.Map<Role>(roleViewModel);
-            var role = _demandDbContext.Menus.FirstOrDefault(item => item.Name == newRole.Name);
+            var role = _demandDbContext.Roles.FirstOrDefault(item => item.Name == newRole.Name);
             if (role != null)
             {
                 reason = "已存在名称：" + newRole.Name;
@@ -62,6 +62,12 @@ namespace DemandManagementServer.Services
                 reason = "未查找到该角色";
                 return false;
             }
+            var sameNameRole = _demandDbContext.Roles.FirstOrDefault(item => item.Name == roleViewModel.Name);
+            if (sameNameRole != null)
+            {
+                reason = "已存在名称：" + roleViewModel.Name;
+                return false;
+            }
             //foreach (var rolemenu in role.RoleMenus)
             //{
             //    _demandDbContext.RoleMenus.Remove(rolemenu);
@@ -75,6 +81,28 @@ namespace DemandManagementServer.Services
             return true;
         }
 
-        
+        public void DeleteRole(int id)
+        {
+            var role = _demandDbContext.Roles.Include(item => item.RoleMenus).SingleOrDefault(item => item.Id == id);
+            if (role == null)
+            {
+                return;
+            }
+            _demandDbContext.Roles.Remove(role);
+            _demandDbContext.SaveChanges();
+        }
+
+        public void DeleteRoles(List<int> ids)
+        {
+            foreach (var id in ids)
+            {
+                var role = _demandDbContext.Roles.Include(item=>item.RoleMenus).SingleOrDefault(item => item.Id == id);
+                if (role != null)
+                {
+                    _demandDbContext.Roles.Remove(role);
+                }
+            }
+            _demandDbContext.SaveChanges();
+        }
     }
 }

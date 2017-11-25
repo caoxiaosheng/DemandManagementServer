@@ -113,7 +113,7 @@ function add() {
     $("#Action").val("AddRole");
     $("#Id").val(0);
     $("#Name").val("");
-    $("#Menu").select2("val", "");
+    $("#Menu").val(null).trigger("change");
     $("#Remarks").val("");
     //弹出新增窗体
     $("#addRole").modal("show");
@@ -164,4 +164,46 @@ function save() {
             };
         }
     });
+}
+
+function deleteSingle(id) {
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/Role/DeleteSingle",
+                data: { "id": id },
+                success: function () {
+                    loadRoles(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
+};
+
+function deleteMulti() {
+    var ids = new Array();
+    $(".checkboxs").each(function (index, elem) {
+        if ($(elem).prop("checked") === true) {
+            ids.push($(elem).val());
+        }
+    });
+    if (ids.length === 0) {
+        layer.alert("请先选择删除项");
+        return;
+    }
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/Role/DeleteMulti",
+                data: { "ids": ids },
+                success: function () {
+                    loadRoles(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
 }

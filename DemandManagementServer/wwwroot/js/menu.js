@@ -114,18 +114,19 @@ function save() {
 }
 
 function deleteSingle(id) {
-    layer.confirm("是否删除", { btn: ["是", "否"] },
-        function () {
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function() {
             $.ajax({
                 type: "Post",
                 url: "/Menu/DeleteSingle",
                 data: { "id": id },
-                success: function () {
+                success: function() {
                     loadMenus(1, 15);
                     layer.closeAll();
                 }
             });
-        })
+        });
 };
 
 function deleteMulti() {
