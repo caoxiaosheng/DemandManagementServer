@@ -62,11 +62,15 @@ namespace DemandManagementServer.Services
                 reason = "未查找到该角色";
                 return false;
             }
-            var sameNameRole = _demandDbContext.Roles.FirstOrDefault(item => item.Name == roleViewModel.Name);
-            if (sameNameRole != null)
+            //仅名称变了 才需要判断重复
+            if (roleViewModel.Name != role.Name)
             {
-                reason = "已存在名称：" + roleViewModel.Name;
-                return false;
+                var sameNameRole = _demandDbContext.Roles.FirstOrDefault(item => item.Name == roleViewModel.Name);
+                if (sameNameRole != null)
+                {
+                    reason = "已存在名称：" + roleViewModel.Name;
+                    return false;
+                }
             }
             //foreach (var rolemenu in role.RoleMenus)
             //{

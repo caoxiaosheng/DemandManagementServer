@@ -53,11 +53,15 @@ namespace DemandManagementServer.Services
                 reason = "未查找到该功能菜单";
                 return false;
             }
-            var sameNameMenu = _demandDbContext.Menus.FirstOrDefault(item => item.Name == menuViewModel.Name);
-            if (sameNameMenu != null)
+            //仅名称变了 才需要判断重复
+            if (menuViewModel.Name != menu.Name)
             {
-                reason = "已存在名称：" + sameNameMenu.Name;
-                return false;
+                var sameNameMenu = _demandDbContext.Menus.FirstOrDefault(item => item.Name == menuViewModel.Name);
+                if (sameNameMenu != null)
+                {
+                    reason = "已存在名称：" + sameNameMenu.Name;
+                    return false;
+                }
             }
             var newMenu = AutoMapper.Mapper.Map<Menu>(menuViewModel);
             EntityUpdateHelper.EntityToEntity(newMenu, menu);
