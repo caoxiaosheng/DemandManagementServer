@@ -41,5 +41,11 @@ namespace DemandManagementServer.Services
             }
             return userViewModels;
         }
+
+        public UserViewModel GetUserById(int id)
+        {
+            var user = _demandDbContext.Users.Include(item => item.UserRoles).FirstOrDefault(item => item.Id == id);
+            return AutoMapper.Mapper.Map<UserViewModel>(user);
+        }
     }
 }

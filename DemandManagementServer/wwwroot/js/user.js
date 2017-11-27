@@ -4,6 +4,7 @@
     $("#btnSave").click(function () { save(); });
     $("#btnDelete").click(function () { deleteMulti(); });
     loadUsers(1, 15);
+    initialRoleSelect();
 });
 
 function loadUsers(startPage, pageSize) {
@@ -50,6 +51,66 @@ function loadUsers(startPage, pageSize) {
                 };
                 elment.bootstrapPaginator(options); //分页插件初始化
             }
+        }
+    });
+}
+
+function initialRoleSelect() {
+    $.ajax({
+        type: "Get",
+        url: "/Role/GetAllRoles",    //获取数据的ajax请求地址
+        success: function (data) {
+            $("#Role").select2();
+            var option = "";
+            $.each(data,
+                function (i, item) {
+                    option += "<option value='" + item.id + "'>" + item.name + "</option>";
+                });
+            $("#Role").html(option);
+        }
+    });
+}
+
+function checkAll(checkBox) {
+    $(".checkboxs").each(function (index, elem) { $(elem).prop("checked", checkBox.checked) });
+}
+
+function add() {
+    $("#Title").text("新增用户");
+    $("#Action").val("AddUser");
+    $("#Id").val(0);
+    $("#UserName").val("");
+    $("#Name").val("");
+    $("#Email").val("");
+    $("#MobileNumber").val("");
+    $("#Role").val(null).trigger("change");
+    $("#Remarks").val("");
+    //弹出新增窗体
+    $("#addUser").modal("show");
+}
+
+function edit(id) {
+    $("#Title").text("编辑用户");
+    $("#Action").val("EditUser");
+    $.ajax({
+        type: "post",
+        url: "/User/GetUserById?id=" + id,
+        success: function (data) {
+            $("#Id").val(data.id);
+            $("#UserName").val(data.userName);
+            $("#Name").val(data.name);
+            $("#Email").val(data.email);
+            $("#MobileNumber").val(data.mobileNumber);
+            $("#Remarks").val(data.remarks);
+            if (data.userRoles.length > 0) {
+                var roleIds = [];
+                $.each(data.userRoles, function (i, item) {
+                    roleIds.push(item.roleId.toString());
+                });
+                $("#Role").val(roleIds).trigger('change');
+            }
+            //弹出新增窗体
+            $("#addUser").modal("show");
         }
     });
 }

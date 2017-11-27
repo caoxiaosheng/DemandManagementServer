@@ -28,5 +28,11 @@ namespace DemandManagementServer.Controllers
                 pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize)
             });
         }
+
+        public IActionResult GetUserById(int id)
+        {
+            var user = _userService.GetUserById(id);
+            return Json(user);
+        }
     }
 }

@@ -27,7 +27,7 @@ function initTree() {
             $("#menuTree").on("ready.jstree", function (e, data) {   //树创建完成事件
                 data.instance.open_all();    //展开所有节点
             });
-            initialRoleSelect(data);
+            initialMenuSelect(data);
         }
     });
 }
@@ -94,7 +94,7 @@ function loadMenusByRoleId(selectedRoleId) {
     });
 };
 
-function initialRoleSelect(data) {
+function initialMenuSelect(data) {
     $("#Menu").select2();
     var option = "";
     $.each(data,

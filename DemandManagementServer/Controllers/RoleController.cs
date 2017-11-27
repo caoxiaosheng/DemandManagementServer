@@ -131,5 +131,11 @@ namespace DemandManagementServer.Controllers
         {
             _roleService.DeleteRoles(ids);
         }
+
+        public IActionResult GetAllRoles()
+        {
+            var roles = _roleService.GetAllRoles();
+            return Json(roles);
+        }
     }
 }

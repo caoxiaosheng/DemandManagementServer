@@ -108,5 +108,11 @@ namespace DemandManagementServer.Services
             }
             _demandDbContext.SaveChanges();
         }
+
+        public List<RoleViewModel> GetAllRoles()
+        {
+            var roles = _demandDbContext.Roles.OrderBy(item => item.Id);
+            return AutoMapper.Mapper.Map<List<RoleViewModel>>(roles);
+        }
     }
 }

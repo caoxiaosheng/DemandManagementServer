@@ -11,5 +11,6 @@ namespace DemandManagementServer.Services
     {
         User CheckUser(string userName, string password);
         List<UserViewModel> GetUsers(int startPage, int pageSize, out int rowCount);
+        UserViewModel GetUserById(int id);
     }
 }

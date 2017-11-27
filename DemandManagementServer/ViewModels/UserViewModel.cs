@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -25,5 +26,8 @@ namespace DemandManagementServer.ViewModels
 
         [BindNever]
         public string Roles { get; set; }
+
+        [BindNever]
+        public List<UserRoleViewModel> UserRoles { get; set; }
     }
 }

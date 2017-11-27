@@ -21,5 +21,7 @@ namespace DemandManagementServer.Services
         void DeleteRole(int id);
 
         void DeleteRoles(List<int> ids);
+
+        List<RoleViewModel> GetAllRoles();
     }
 }
