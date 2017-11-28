@@ -47,5 +47,81 @@ namespace DemandManagementServer.Services
             var user = _demandDbContext.Users.Include(item => item.UserRoles).FirstOrDefault(item => item.Id == id);
             return AutoMapper.Mapper.Map<UserViewModel>(user);
         }
+
+        public bool AddUser(UserViewModel userViewModel, out string reason)
+        {
+            reason = string.Empty;
+            var newUser = AutoMapper.Mapper.Map<User>(userViewModel);
+            var user = _demandDbContext.Users.FirstOrDefault(item => item.UserName == newUser.UserName);
+            if (user != null)
+            {
+                reason = "已存在名称：" + newUser.UserName;
+                return false;
+            }
+            newUser.Password = "123456";
+            newUser.CreateTime = DateTime.Now;
+            newUser.IsDeleted = 0;
+            _demandDbContext.Users.Add(newUser);
+            _demandDbContext.SaveChanges();
+            return true;
+        }
+
+        public bool UpdateUser(UserViewModel userViewModel, out string reason)
+        {
+            reason = string.Empty;
+            var user = _demandDbContext.Users.Include(item => item.UserRoles)
+                .FirstOrDefault(item => item.Id == userViewModel.Id);
+            if (user == null)
+            {
+                reason = "未找到该用户";
+                return false;
+            }
+            //仅名称变了 才需要判断重复
+            if (userViewModel.UserName != user.UserName)
+            {
+                var sameUserNameUser = _demandDbContext.Users.FirstOrDefault(item => item.UserName == userViewModel.UserName);
+                if (sameUserNameUser != null)
+                {
+                    reason = "已存在名称：" + userViewModel.Name;
+                    return false;
+                }
+            }
+            var newUser = AutoMapper.Mapper.Map<User>(userViewModel);
+            user.UserRoles.Clear();
+            _demandDbContext.SaveChanges();
+            user.UserRoles = newUser.UserRoles;
+            user.UserName = newUser.UserName;
+            user.Name = newUser.Name;
+            user.Email = newUser.Email;
+            user.MobileNumber = newUser.MobileNumber;
+            user.Remarks = newUser.Remarks;
+            user.CreateTime=DateTime.Now;
+            _demandDbContext.SaveChanges();
+            return true;
+        }
+
+        public void DeleteUser(int id)
+        {
+            var user = _demandDbContext.Users.Include(item => item.UserRoles).SingleOrDefault(item => item.Id == id);
+            if (user == null)
+            {
+                return;
+            }
+            user.IsDeleted = 1;
+            _demandDbContext.SaveChanges();
+        }
+
+        public void DeleteUsers(List<int> ids)
+        {
+            foreach (var id in ids)
+            {
+                var user = _demandDbContext.Users.Include(item => item.UserRoles).SingleOrDefault(item => item.Id == id);
+                if (user != null)
+                {
+                    user.IsDeleted = 1;
+                }
+            }
+            _demandDbContext.SaveChanges();
+        }
     }
 }

@@ -20,8 +20,10 @@ namespace DemandManagementServer.ViewModels
 
         public string Remarks { get; set; }
         
+        [BindNever]
         public DateTime LastLoginTime { get; set; }
 
+        [BindNever]
         public int IsDeleted { get; set; }
 
         [BindNever]

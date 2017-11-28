@@ -114,3 +114,72 @@ function edit(id) {
         }
     });
 }
+
+function save() {
+    var postData = {
+        "userViewModel": {
+            "Id": $("#Id").val(),
+            "UserName": $("#UserName").val(),
+            "Name": $("#Name").val(),
+            "Email": $("#Email").val(),
+            "MobileNumber": $("#MobileNumber").val(),
+            "Remarks": $("#Remarks").val()
+        },
+        "roleIds": $("#Role").val().toString()
+    };
+    $.ajax({
+        type: "Post",
+        url: "/User/" + $("#Action").val(),
+        data: postData,
+        success: function (data) {
+            if (data.result === true) {
+                loadUsers(1, 15);
+                $("#addUser").modal("hide");
+            } else {
+                layer.tips(data.reason, "#btnSave");
+            };
+        }
+    });
+}
+
+function deleteSingle(id) {
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/User/DeleteSingle",
+                data: { "id": id },
+                success: function () {
+                    loadUsers(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
+};
+
+function deleteMulti() {
+    var ids = new Array();
+    $(".checkboxs").each(function (index, elem) {
+        if ($(elem).prop("checked") === true) {
+            ids.push($(elem).val());
+        }
+    });
+    if (ids.length === 0) {
+        layer.alert("请先选择删除项");
+        return;
+    }
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/User/DeleteMulti",
+                data: { "ids": ids },
+                success: function () {
+                    loadUsers(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
+}
