@@ -4,6 +4,7 @@ using DemandManagementServer.DAL;
 using DemandManagementServer.Extensions;
 using DemandManagementServer.Models;
 using DemandManagementServer.ViewModels;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemandManagementServer.Services
 {
@@ -40,6 +41,9 @@ namespace DemandManagementServer.Services
                 return false;
             }
             _demandDbContext.Menus.Add(newMenu);
+            //新增的功能 自动附加到管理员
+            var adminRole = _demandDbContext.Roles.Single(item => item.Id == 1);
+            _demandDbContext.RoleMenus.Add(new RoleMenu() {Menu = newMenu, Role = adminRole});
             _demandDbContext.SaveChanges();
             return true;
         }
@@ -77,6 +81,9 @@ namespace DemandManagementServer.Services
                 return;
             }
             _demandDbContext.Menus.Remove(menu);
+            //功能删除 同步移除角色的绑定
+            var roleMenus = _demandDbContext.RoleMenus.Where(item => item.MenuId == menu.Id);
+            _demandDbContext.RoleMenus.RemoveRange(roleMenus);
             _demandDbContext.SaveChanges();
         }
 
@@ -88,6 +95,8 @@ namespace DemandManagementServer.Services
                 if (menu != null)
                 {
                     _demandDbContext.Menus.Remove(menu);
+                    var roleMenus = _demandDbContext.RoleMenus.Where(item => item.MenuId == menu.Id);
+                    _demandDbContext.RoleMenus.RemoveRange(roleMenus);
                 }
             }
             _demandDbContext.SaveChanges();
@@ -97,6 +106,29 @@ namespace DemandManagementServer.Services
         {
             var menus = _demandDbContext.Menus.OrderBy(item => item.Id);
             return AutoMapper.Mapper.Map<List<MenuViewModel>>(menus);
+        }
+
+        public List<MenuViewModel> GetMenusByUserName(string userName)
+        {
+            var allMenus= _demandDbContext.Menus.OrderBy(item => item.Id);
+            
+            var user = _demandDbContext.Users.Include(item => item.UserRoles).ThenInclude(item => item.Role)
+                .ThenInclude(item => item.RoleMenus).ThenInclude(item => item.Menu)
+                .SingleOrDefault(item => item.UserName == userName);
+            if (user == null)
+            {
+                return new List<MenuViewModel>();
+            }
+            if (user.Id==1)
+            {
+                return AutoMapper.Mapper.Map<List<MenuViewModel>>(allMenus);
+            }
+            List<Menu> selectedMenus=new List<Menu>();
+            foreach (var userRole in user.UserRoles)
+            {
+                selectedMenus=selectedMenus.Union(userRole.Role.RoleMenus.Select(item => item.Menu)).ToList();
+            }
+            return AutoMapper.Mapper.Map<List<MenuViewModel>>(selectedMenus.OrderBy(item=>item.Id));
         }
     }
 }

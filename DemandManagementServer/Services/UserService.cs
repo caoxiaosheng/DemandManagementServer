@@ -69,6 +69,11 @@ namespace DemandManagementServer.Services
         public bool UpdateUser(UserViewModel userViewModel, out string reason)
         {
             reason = string.Empty;
+            if (userViewModel.Id == 1)
+            {
+                reason = "admin账号不允许修改";
+                return false;
+            }
             var user = _demandDbContext.Users.Include(item => item.UserRoles)
                 .FirstOrDefault(item => item.Id == userViewModel.Id);
             if (user == null)
@@ -102,6 +107,10 @@ namespace DemandManagementServer.Services
 
         public void DeleteUser(int id)
         {
+            if (id == 1)
+            {
+                return;
+            }
             var user = _demandDbContext.Users.Include(item => item.UserRoles).SingleOrDefault(item => item.Id == id);
             if (user == null)
             {
@@ -115,6 +124,10 @@ namespace DemandManagementServer.Services
         {
             foreach (var id in ids)
             {
+                if (id == 1)
+                {
+                    continue;
+                }
                 var user = _demandDbContext.Users.Include(item => item.UserRoles).SingleOrDefault(item => item.Id == id);
                 if (user != null)
                 {

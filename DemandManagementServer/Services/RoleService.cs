@@ -56,6 +56,11 @@ namespace DemandManagementServer.Services
         public bool UpdateRole(RoleViewModel roleViewModel, out string reason)
         {
             reason = string.Empty;
+            if (roleViewModel.Id == 1)
+            {
+                reason = "管理员角色不允许修改";
+                return false;
+            }
             var role = _demandDbContext.Roles.Include(item=>item.RoleMenus).FirstOrDefault(item => item.Id == roleViewModel.Id);
             if (role == null)
             {
@@ -87,12 +92,19 @@ namespace DemandManagementServer.Services
 
         public void DeleteRole(int id)
         {
+            if (id == 1)
+            {
+                return;
+            }
             var role = _demandDbContext.Roles.Include(item => item.RoleMenus).SingleOrDefault(item => item.Id == id);
             if (role == null)
             {
                 return;
             }
             _demandDbContext.Roles.Remove(role);
+            //角色删除 同步移除用户的绑定
+            var userRoles = _demandDbContext.UserRoles.Where(item => item.RoleId == role.Id);
+            _demandDbContext.UserRoles.RemoveRange(userRoles);
             _demandDbContext.SaveChanges();
         }
 
@@ -100,10 +112,16 @@ namespace DemandManagementServer.Services
         {
             foreach (var id in ids)
             {
+                if (id == 1)
+                {
+                    continue;
+                }
                 var role = _demandDbContext.Roles.Include(item=>item.RoleMenus).SingleOrDefault(item => item.Id == id);
                 if (role != null)
                 {
                     _demandDbContext.Roles.Remove(role);
+                    var userRoles = _demandDbContext.UserRoles.Where(item => item.RoleId == role.Id);
+                    _demandDbContext.UserRoles.RemoveRange(userRoles);
                 }
             }
             _demandDbContext.SaveChanges();

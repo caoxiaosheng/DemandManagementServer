@@ -31,5 +31,16 @@ namespace DemandManagementServer.Models
         /// 功能备注
         /// </summary>
         public string Remarks { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            Menu menu = obj as Menu;
+            return Id == menu?.Id;
+        }
+        
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
+        }
     }
 }
