@@ -25,6 +25,8 @@ namespace DemandManagementServer.DAL
 
         public DbSet<RoleMenu> RoleMenus { get; set; }
 
+        public DbSet<Customer> Customers { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserRole>().HasKey(userrole => new {userrole.UserId, userrole.RoleId});
@@ -40,6 +42,7 @@ namespace DemandManagementServer.DAL
             modelBuilder.Entity<Role>().HasIndex(role => role.Name).IsUnique();
             modelBuilder.Entity<User>().HasIndex(user => user.UserName).IsUnique();
             modelBuilder.Entity<Menu>().HasIndex(menu => menu.Name).IsUnique();
+            modelBuilder.Entity<Customer>().HasIndex(customer => customer.Name).IsUnique();
 
             base.OnModelCreating(modelBuilder);
         }

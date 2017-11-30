@@ -1,11 +1,11 @@
 ﻿@{
-    ViewBag.CurrentMenu = "Menu";
+    ViewBag.CurrentMenu = "Cuntomer";
 }
 
 <div class="row">
     <div class="box box-primary">
         <div class="box-header with-border">
-            <h3 class="box-title">功能列表</h3>
+            <h3 class="box-title">客户列表</h3>
             <div class="pull-right box-tools">
                 <button id="btnAdd" title="" class="btn btn-primary" type="button" data-original-title="新增功能" data-toggle="tooltip" data-widget="">
                     <i class="fa fa-plus-circle"></i>&nbsp;&nbsp;新增
@@ -21,19 +21,16 @@
                     <tr role="row">
                         <th style="width:40px;text-align:center;"><input id="checkAll" type="checkbox"></th>
                         <th tabindex="0" aria-label="">
-                            功能名称
+                            客户名称
                         </th>
                         <th tabindex="0" aria-label="">
-                            功能编码
+                            客户类型
                         </th>
                         <th tabindex="0" aria-label="">
-                            地址
+                            客户状态
                         </th>
                         <th tabindex="0" aria-label="">
-                            图标
-                        </th>
-                        <th tabindex="0" aria-label="">
-                            功能描述
+                            备注
                         </th>
                         <th tabindex="0" style="width: 230px;" aria-label="">
                             操作
@@ -50,5 +47,6 @@
 </div>
 @Html.Partial("Edit")
 @section scripts{
-    <script src="~/js/menu.js"></script>
+    <script src="~/js/customer.js"></script>
 }
+
