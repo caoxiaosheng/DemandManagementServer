@@ -1,1 +1,55 @@
-﻿
+﻿<div id="addCustomer" tabindex="-1" class="modal fade in" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h5 class="box-title" id="Title"></h5>
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <form class="form-horizontal">
+                <input type="hidden" id="Id" />
+                <input type="hidden" id="Action" />
+                <div class="box-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Name">客户名称</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="Name" type="text" placeholder="客户名称(必填)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="CustomerType">客户类型</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="CustomerType" style="width: 100%">
+                                <option value="0">免费用户</option>
+                                <option value="1">付费用户</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="CustomerPriority">客户优先级</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="CustomerPriority" style="width: 100%">
+                                <option value="0">低</option>
+                                <option value="1">正常</option>
+                                <option value="2">高</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Remarks">备注</label>
+                        <div class="col-sm-10">
+                            <textarea id="Remarks" class="form-control" style="resize: vertical" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="pull-right box-tools">
+                        <button id="btnSave" class="btn btn-primary" type="button">保存</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

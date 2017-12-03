@@ -12,6 +12,8 @@ namespace DemandManagementServer.Models
 
         public CustomerPriority CustomerPriority { get; set; }
 
+        public CustomerState CustomerState { get; set; }
+
         public string Remark { get; set; }
 
         public DateTime CreateTime { get; set; }

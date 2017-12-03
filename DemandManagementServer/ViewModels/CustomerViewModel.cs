@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace DemandManagementServer.ViewModels
 {
@@ -12,6 +13,9 @@ namespace DemandManagementServer.ViewModels
         public int CustomerType { get; set; }
 
         public int CustomerPriority { get; set; }
+
+        [BindNever]
+        public int CustomerState { get; set; }
 
         public string Remark { get; set; }
     }
