@@ -9,6 +9,7 @@
     $("#btnAdd").click(function () { add(); });
     $("#btnSave").click(function () { save(); });
     $("#btnDelete").click(function () { deleteMulti(); });
+    loadCustomers(1, 15);
 });
 
 function loadCustomers(startPage, pageSize) {
@@ -18,7 +19,7 @@ function loadCustomers(startPage, pageSize) {
         type: "GET",
         url: "/Customer/GetCustomers?startPage=" + startPage + "&pageSize=" + pageSize,
         success: function (data) {
-            $.each(data.roles,
+            $.each(data.customers,
                 function (i, item) {
                     var tr = "<tr>";
                     tr += "<td align='center'><input type='checkbox' class='checkboxs' value='" + item.id + "'/></td>";
@@ -66,4 +67,89 @@ function add() {
     $("#Remarks").val("");
     //弹出新增窗体
     $("#addCustomer").modal("show");
+}
+
+function edit(id) {
+    $("#Title").text("编辑角色");
+    $("#Action").val("EditCustomer");
+    $.ajax({
+        type: "post",
+        url: "/Customer/GetCustomerById?id=" + id,
+        success: function (data) {
+            $("#Id").val(data.id);
+            $("#Name").val(data.name);
+            $("#CustomerType").val(data.customerType).trigger('change');
+            $("#CustomerPriority").val(data.customerPriority).trigger('change');
+            $("#Remarks").val(data.remarks);
+            //弹出新增窗体
+            $("#addCustomer").modal("show");
+        }
+    });
+}
+
+function save() {
+    var postData = {
+        "customerViewModel": {
+            "Id": $("#Id").val(),
+            "Name": $("#Name").val(),
+            "CustomerType": $("#CustomerType").select2("val"),
+            "CustomerPriority": $("#CustomerPriority").select2("val"),
+            "Remarks": $("#Remarks").val()
+        }
+    };
+    $.ajax({
+        type: "Post",
+        url: "/Customer/" + $("#Action").val(),
+        data: postData,
+        success: function (data) {
+            if (data.result === true) {
+                loadCustomers(1, 15);
+                $("#addCustomer").modal("hide");
+            } else {
+                layer.tips(data.reason, "#btnSave");
+            };
+        }
+    });
+}
+
+function deleteSingle(id) {
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/Customer/DeleteSingle",
+                data: { "id": id },
+                success: function () {
+                    loadCustomers(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
+};
+
+function deleteMulti() {
+    var ids = new Array();
+    $(".checkboxs").each(function (index, elem) {
+        if ($(elem).prop("checked") === true) {
+            ids.push($(elem).val());
+        }
+    });
+    if (ids.length === 0) {
+        layer.alert("请先选择删除项");
+        return;
+    }
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/Customer/DeleteMulti",
+                data: { "ids": ids },
+                success: function () {
+                    loadCustomers(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
 }

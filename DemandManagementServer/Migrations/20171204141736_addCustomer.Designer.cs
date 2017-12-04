@@ -12,9 +12,10 @@ using System;
 namespace DemandManagementServer.Migrations
 {
     [DbContext(typeof(DemandDbContext))]
-    partial class DemandDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171204141736_addCustomer")]
+    partial class addCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +37,7 @@ namespace DemandManagementServer.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("Remarks");
+                    b.Property<string>("Remark");
 
                     b.HasKey("Id");
 

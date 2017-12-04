@@ -17,6 +17,6 @@ namespace DemandManagementServer.ViewModels
         [BindNever]
         public int CustomerState { get; set; }
 
-        public string Remark { get; set; }
+        public string Remarks { get; set; }
     }
 }

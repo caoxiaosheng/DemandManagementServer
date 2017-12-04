@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DemandManagementServer.Extensions;
 using DemandManagementServer.Services;
+using DemandManagementServer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemandManagementServer.Controllers
@@ -26,10 +28,62 @@ namespace DemandManagementServer.Controllers
             var result = _customerService.GetCustomers(startPage, pageSize, out var rowCount);
             return Json(new
             {
-                menus = result,
+                customers = result,
                 rowsCount = rowCount,
                 pageCount = Math.Ceiling(Convert.ToDecimal(rowCount) / pageSize)
             });
+        }
+
+        public IActionResult GetCustomerById(int id)
+        {
+            var menu = _customerService.GetCustomerById(id);
+            return Json(menu);
+        }
+
+        public IActionResult AddCustomer(CustomerViewModel customerViewModel)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return Json(new
+                {
+                    result = false,
+                    reason = ModelState.GetErrorMessage()
+                });
+            }
+            var result = _customerService.AddCustomer(customerViewModel, out var reason);
+            return Json(new
+            {
+                result = result,
+                reason = reason
+            });
+        }
+
+        public IActionResult EditCustomer(CustomerViewModel customerViewModel)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return Json(new
+                {
+                    result = false,
+                    reason = ModelState.GetErrorMessage()
+                });
+            }
+            var result = _customerService.UpdateCustomer(customerViewModel, out var reason);
+            return Json(new
+            {
+                result = result,
+                reason = reason
+            });
+        }
+
+        public void DeleteSingle(int id)
+        {
+            _customerService.DeleteCustomers(new List<int>(){id});
+        }
+
+        public void DeleteMulti(List<int> ids)
+        {
+            _customerService.DeleteCustomers(ids);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace DemandManagementServer.Models
 
         public CustomerState CustomerState { get; set; }
 
-        public string Remark { get; set; }
+        public string Remarks { get; set; }
 
         public DateTime CreateTime { get; set; }
     }
