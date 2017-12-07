@@ -1,11 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
-namespace DemandManagementServer.Models
+namespace DemandManagementServer.ViewModels
 {
-    public class SoftwareVersion
+    public class SoftwareVersionViewModel
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "版本名称不能为空")]
         public string VersionName { get; set; }
 
         public DateTime ExpectedStartDate { get; set; }
@@ -16,17 +18,10 @@ namespace DemandManagementServer.Models
 
         public DateTime ReleaseDate { get; set; }
 
-        public VersionState VersionState { get; set; }
+        public int VersionSate { get; set; }
 
         public int IsDeleted { get; set; }
 
         public string Remarks { get; set; }
-    }
-
-    public enum VersionState
-    {
-        计划阶段,
-        正在实施,
-        已发布
     }
 }
