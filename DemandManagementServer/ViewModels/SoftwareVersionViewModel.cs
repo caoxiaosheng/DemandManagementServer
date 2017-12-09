@@ -18,7 +18,7 @@ namespace DemandManagementServer.ViewModels
 
         public DateTime ReleaseDate { get; set; }
 
-        public int VersionSate { get; set; }
+        public int VersionProgress { get; set; }
 
         public int IsDeleted { get; set; }
 

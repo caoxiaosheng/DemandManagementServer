@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="~/lib/admin-lte/dist/css/skins/skin-red-light.css">
     <link rel="stylesheet" href="~/lib/jstree/dist/themes/default/style.min.css">
     <link rel="stylesheet" href="~/lib/select2/dist/css/select2.css">
+    <link rel="stylesheet" href="~/lib/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css"/>
+    
     
     <style>
         .badge-success {
@@ -221,26 +223,26 @@
                 <ul class="sidebar-menu">
                     @await Component.InvokeAsync("Navigation");
                     @*<ul class="sidebar-menu">
-                        <li class="header">权限管理</li>
-                        <!-- Optionally, you can add icons to the links -->
-                        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>组织机构</span></a></li>
-                        <li><a href="#"><i class="fa fa-link"></i> <span>角色管理</span></a></li>
-                        <li><a href="#"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
-                        <li><a href="#"><i class="fa fa-link"></i> <span>功能管理</span></a></li>
-                        <li><a href="#"><i class="fa fa-link"></i> <span>权限管理</span></a></li>
-                        <li class="treeview">
-                                <a href="#">
-                                    <i class="fa fa-link"></i> <span>Multilevel</span>
-                                    <span class="pull-right-container">
-                                        <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
-                                </a>
-                                <ul class="treeview-menu">
-                                    <li><a href="#">Link in level 2</a></li>
-                                    <li><a href="#">Link in level 2</a></li>
-                                </ul>
-                            </li>
-                    </ul>*@
+                            <li class="header">权限管理</li>
+                            <!-- Optionally, you can add icons to the links -->
+                            <li class="active"><a href="#"><i class="fa fa-link"></i> <span>组织机构</span></a></li>
+                            <li><a href="#"><i class="fa fa-link"></i> <span>角色管理</span></a></li>
+                            <li><a href="#"><i class="fa fa-link"></i> <span>用户管理</span></a></li>
+                            <li><a href="#"><i class="fa fa-link"></i> <span>功能管理</span></a></li>
+                            <li><a href="#"><i class="fa fa-link"></i> <span>权限管理</span></a></li>
+                            <li class="treeview">
+                                    <a href="#">
+                                        <i class="fa fa-link"></i> <span>Multilevel</span>
+                                        <span class="pull-right-container">
+                                            <i class="fa fa-angle-left pull-right"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="treeview-menu">
+                                        <li><a href="#">Link in level 2</a></li>
+                                        <li><a href="#">Link in level 2</a></li>
+                                    </ul>
+                                </li>
+                        </ul>*@
                 </ul>
                 <!-- /.sidebar-menu -->
             </section>
@@ -355,6 +357,8 @@
     <script src="~/lib/jstree/dist/jstree.js"></script>
     <script src="~/lib/select2/dist/js/select2.js"></script>
     <script src="~/lib/select2/dist/js/i18n/zh-CN.js"></script>
+    <script src="~/lib/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="~/lib/bootstrap-datepicker/dist/locales/bootstrap-datepicker.zh-CN.min.js"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
