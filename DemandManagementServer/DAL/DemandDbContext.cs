@@ -46,7 +46,7 @@ namespace DemandManagementServer.DAL
             modelBuilder.Entity<Menu>().HasIndex(menu => menu.Name).IsUnique();
             modelBuilder.Entity<Customer>().HasIndex(customer => customer.Name).IsUnique();
 
-            modelBuilder.Entity<SoftwareVersion>().HasIndex(item => item.Version).IsUnique();
+            modelBuilder.Entity<SoftwareVersion>().HasIndex(item => item.VersionName).IsUnique();
 
             base.OnModelCreating(modelBuilder);
         }

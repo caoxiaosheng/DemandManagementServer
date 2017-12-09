@@ -1,1 +1,90 @@
-﻿
+﻿<div id="addSoftwareVersion" tabindex="-1" class="modal fade in" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h5 class="box-title" id="Title"></h5>
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <form class="form-horizontal">
+                <input type="hidden" id="Id" />
+                <input type="hidden" id="Action" />
+                <div class="box-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="VersionName">版本名称</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="VersionName" type="text" placeholder="版本名称(必填)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="ExpectedStartDate">预计开始时间（开发）</label>
+                        <div class="col-sm-10">
+                            <div class="input-group date" id="ExpectedStartDate">
+                                <input type="text" class="form-control" readonly="readonly">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-th"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="ExpectedEndDate">预计结束时间（开发）</label>
+                        <div class="col-sm-10">
+                            <div class="input-group date" id="ExpectedEndDate">
+                                <input type="text" class="form-control" readonly="readonly">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-th"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="ExpectedReleaseDate">预计发布时间</label>
+                        <div class="col-sm-10">
+                            <div class="input-group date" id="ExpectedReleaseDate">
+                                <input type="text" class="form-control" readonly="readonly">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-th"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="ReleaseDate">实际发布时间</label>
+                        <div class="col-sm-10">
+                            <div class="input-group date" id="ReleaseDate">
+                                <input type="text" class="form-control" readonly="readonly">
+                                <span class="input-group-addon">
+                                    <i class="glyphicon glyphicon-th"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="VersionProgress">版本进度</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="VersionProgress" style="width: 100%">
+                                <option value="0">计划阶段</option>
+                                <option value="1">正在实施</option>
+                                <option value="2">已发布</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Remarks">备注</label>
+                        <div class="col-sm-10">
+                            <textarea id="Remarks" class="form-control" style="resize: vertical" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="pull-right box-tools">
+                        <button id="btnSave" class="btn btn-primary" type="button">保存</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
