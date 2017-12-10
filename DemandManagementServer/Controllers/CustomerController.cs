@@ -36,8 +36,8 @@ namespace DemandManagementServer.Controllers
 
         public IActionResult GetCustomerById(int id)
         {
-            var menu = _customerService.GetCustomerById(id);
-            return Json(menu);
+            var customer = _customerService.GetCustomerById(id);
+            return Json(customer);
         }
 
         public IActionResult AddCustomer(CustomerViewModel customerViewModel)

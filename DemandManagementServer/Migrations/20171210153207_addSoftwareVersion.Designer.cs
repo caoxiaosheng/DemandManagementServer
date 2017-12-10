@@ -12,9 +12,10 @@ using System;
 namespace DemandManagementServer.Migrations
 {
     [DbContext(typeof(DemandDbContext))]
-    partial class DemandDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171210153207_addSoftwareVersion")]
+    partial class addSoftwareVersion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

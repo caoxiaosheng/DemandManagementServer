@@ -1,9 +1,11 @@
 ﻿$(function () {
-    $("#checkAll").click(function () { checkAll(this); });
+    $("#VersionProgress").select2({
+        minimumResultsForSearch: Infinity
+    });
     $("#btnAdd").click(function () { add(); });
     $("#btnSave").click(function () { save(); });
     $("#btnDelete").click(function () { deleteMulti(); });
-    $('.input-group.date').datepicker({
+    $('.datepicker').datepicker({
         todayBtn: "linked",
         clearBtn: true,
         language: "zh-CN",
@@ -18,10 +20,9 @@ function loadSoftwareVersions(startPage, pageSize) {
         type: "GET",
         url: "/SoftwareVersion/GetSoftwareVersions?startPage=" + startPage + "&pageSize=" + pageSize,
         success: function (data) {
-            $.each(data.customers,
+            $.each(data.softwareVersions,
                 function (i, item) {
                     var tr = "<tr>";
-                    tr += "<td align='center'><input type='checkbox' class='checkboxs' value='" + item.id + "'/></td>";
                     tr += "<td>" + item.versionName + "</td>";
                     tr += "<td>" + item.expectedStartDate + "</td>";
                     tr += "<td>" + item.expectedEndDate + "</td>";
@@ -56,12 +57,79 @@ function loadSoftwareVersions(startPage, pageSize) {
 }
 
 function add() {
-    //$("#Title").text("新增角色");
-    //$("#Action").val("AddRole");
-    //$("#Id").val(0);
-    //$("#Name").val("");
-    //$("#Menu").val(null).trigger("change");
-    //$("#Remarks").val("");
+    $("#Title").text("新增版本");
+    $("#Action").val("AddSoftwareVersion");
+    $("#Id").val(0);
+    $("#VersionName").val("");
+    $(".datepicker").datepicker('clearDates');
+    $("#VersionProgress").val(null).trigger("change");
+    $("#Remarks").val("");
     //弹出新增窗体
     $("#addSoftwareVersion").modal("show");
 }
+
+function edit(id) {
+    $("#Title").text("编辑版本");
+    $("#Action").val("EditSoftwareVersion");
+    $.ajax({
+        type: "post",
+        url: "/SoftwareVersion/GetSoftwareVersionById?id=" + id,
+        success: function (data) {
+            $("#Id").val(data.id);
+            $("#VersionName").val(data.versionName);
+            $("#ExpectedStartDate").datepicker('setDate', data.expectedStartDate);
+            $("#ExpectedEndDate").datepicker('setDate', data.expectedEndDate);
+            $("#ExpectedReleaseDate").datepicker('setDate', data.expectedReleaseDate);
+            $("#ReleaseDate").datepicker('setDate', data.releaseDate);
+            $("#VersionProgress").val(data.versionProgress).trigger('change');
+            $("#Remarks").val(data.remarks);
+            //弹出新增窗体
+            $("#addSoftwareVersion").modal("show");
+        }
+    });
+}
+
+function save() {
+    var postData = {
+        "softwareVersionView": {
+            "Id": $("#Id").val(),
+            "VersionName": $("#VersionName").val(),
+            "ExpectedStartDate": $("#ExpectedStartDate").datepicker('getDate') == null ? "" : $("#ExpectedStartDate").datepicker('getDate').toLocaleDateString(),
+            "ExpectedEndDate": $("#ExpectedEndDate").datepicker('getDate') == null ? "" : $("#ExpectedStartDate").datepicker('getDate').toLocaleDateString(),
+            "ExpectedReleaseDate": $("#ExpectedReleaseDate").datepicker('getDate') == null ? "" : $("#ExpectedStartDate").datepicker('getDate').toLocaleDateString(),
+            "ReleaseDate": $("#ReleaseDate").datepicker('getDate') == null ? "" : $("#ExpectedStartDate").datepicker('getDate').toLocaleDateString(),
+            "Remarks": $("#Remarks").val()
+        }
+    };
+    $.ajax({
+        type: "Post",
+        url: "/SoftwareVersion/" + $("#Action").val(),
+        data: postData,
+        success: function (data) {
+            if (data.result === true) {
+                loadSoftwareVersions(1, 15);
+                $("#addSoftwareVersion").modal("hide");
+            } else {
+                layer.tips(data.reason, "#btnSave");
+            };
+        }
+    });
+}
+
+
+function deleteSingle(id) {
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/SoftwareVersion/DeleteSingle",
+                data: { "id": id },
+                success: function () {
+                    loadSoftwareVersions(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
+};
+
