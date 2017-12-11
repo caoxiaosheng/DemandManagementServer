@@ -44,6 +44,9 @@ namespace DemandManagementServer
                     .RequireAuthenticatedUser()
                     .Build();
                 options.Filters.Add(new AuthorizeFilter(policy));
+            }).AddJsonOptions(options =>
+            {
+                //options.SerializerSettings.DateFormatString = "yyyy年MM月dd日";
             });
 
             services.AddSession();

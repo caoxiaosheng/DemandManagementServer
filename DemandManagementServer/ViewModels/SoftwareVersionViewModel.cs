@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace DemandManagementServer.ViewModels
 {
@@ -10,14 +12,19 @@ namespace DemandManagementServer.ViewModels
 
         [Required(ErrorMessage = "版本名称不能为空")]
         public string VersionName { get; set; }
+        
+        [JsonConverter(typeof(MyDateConverter))]
+        public DateTime ExpectedStartDate { get; set; }
 
-        public DateTime? ExpectedStartDate { get; set; }
+        [JsonConverter(typeof(MyDateConverter))]
+        public DateTime ExpectedEndDate { get; set; }
 
-        public DateTime? ExpectedEndDate { get; set; }
+        [JsonConverter(typeof(MyDateConverter))]
+        public DateTime ExpectedReleaseDate { get; set; }
 
-        public DateTime? ExpectedReleaseDate { get; set; }
-
-        public DateTime? ReleaseDate { get; set; }
+        [BindNever]
+        [JsonConverter(typeof(MyDateConverter))]
+        public DateTime ReleaseDate { get; set; }
 
         public int VersionProgress { get; set; }
 

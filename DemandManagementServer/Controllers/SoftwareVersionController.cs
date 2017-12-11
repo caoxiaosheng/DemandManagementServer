@@ -80,5 +80,10 @@ namespace DemandManagementServer.Controllers
         {
             _service.DeleteSoftwareVersions(new List<int>() { id });
         }
+
+        public void Release(int id)
+        {
+            _service.ReleaseSoftwareVersions(id);
+        }
     }
 }

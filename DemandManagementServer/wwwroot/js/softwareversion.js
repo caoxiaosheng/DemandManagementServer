@@ -27,15 +27,21 @@ function loadSoftwareVersions(startPage, pageSize) {
                     tr += "<td>" + item.expectedStartDate + "</td>";
                     tr += "<td>" + item.expectedEndDate + "</td>";
                     tr += "<td>" + item.expectedReleaseDate + "</td>";
-                    tr += "<td>" + item.releaseDate + "</td>";
+                    tr += "<td>" + (item.versionProgress === 2 ? item.releaseDate:"") + "</td>";
                     tr += "<td>" + (item.versionProgress === 0 ? "计划阶段" : (item.versionProgress === 1 ? "正在实施" : "已发布")) + "</td>";
                     tr += "<td>" + (item.isDeleted === 0 ? "<span class='badge badge-success'>正常</span>" : "<span class='badge badge-warning'>禁用</span>") + "</td>";
                     tr += "<td>" + (item.remarks == null ? "" : item.remarks) + "</td>";
-                    tr += "<td><button class='btn btn-info btn-xs' href='javascript:;' onclick='edit(\"" +
+                    var editHtml = "<button class='btn btn-info btn-xs' href='javascript:;' onclick='edit(\"" +
                         item.id +
-                        "\")'><i class='fa fa-edit'></i> 编辑 </button> <button class='btn btn-danger btn-xs' href='javascript:;' onclick='deleteSingle(\"" +
+                        "\")'><i class='fa fa-edit'></i> 编辑 </button>";
+                    var deleteHtml =
+                        "<button class='btn btn-danger btn-xs' href='javascript:;' onclick='deleteSingle(\"" +
+                            item.id +
+                        "\")'><i class='fa fa-trash-o'></i> 删除 </button>";
+                    var releaseHtml = "<button class='btn btn-success btn-xs' href='javascript:;' onclick='release(\"" +
                         item.id +
-                        "\")'><i class='fa fa-trash-o'></i> 删除 </button> </td>";
+                        "\")'><i class='fa fa-send'></i> 发布 </button>";
+                    tr += "<td>" + (item.versionProgress === 2 ? deleteHtml : editHtml + deleteHtml + releaseHtml)+ "</td>";
                     tr += "</tr>";
                     $("#tableBody").append(tr);
                 });
@@ -80,7 +86,7 @@ function edit(id) {
             $("#ExpectedStartDate").datepicker('setDate', data.expectedStartDate);
             $("#ExpectedEndDate").datepicker('setDate', data.expectedEndDate);
             $("#ExpectedReleaseDate").datepicker('setDate', data.expectedReleaseDate);
-            $("#ReleaseDate").datepicker('setDate', data.releaseDate);
+            //$("#ReleaseDate").datepicker('setDate', data.releaseDate);
             $("#VersionProgress").val(data.versionProgress).trigger('change');
             $("#Remarks").val(data.remarks);
             //弹出新增窗体
@@ -95,9 +101,10 @@ function save() {
             "Id": $("#Id").val(),
             "VersionName": $("#VersionName").val(),
             "ExpectedStartDate": $("#ExpectedStartDate").datepicker('getDate') == null ? "" : $("#ExpectedStartDate").datepicker('getDate').toLocaleDateString(),
-            "ExpectedEndDate": $("#ExpectedEndDate").datepicker('getDate') == null ? "" : $("#ExpectedStartDate").datepicker('getDate').toLocaleDateString(),
-            "ExpectedReleaseDate": $("#ExpectedReleaseDate").datepicker('getDate') == null ? "" : $("#ExpectedStartDate").datepicker('getDate').toLocaleDateString(),
-            "ReleaseDate": $("#ReleaseDate").datepicker('getDate') == null ? "" : $("#ExpectedStartDate").datepicker('getDate').toLocaleDateString(),
+            "ExpectedEndDate": $("#ExpectedEndDate").datepicker('getDate') == null ? "" : $("#ExpectedEndDate").datepicker('getDate').toLocaleDateString(),
+            "ExpectedReleaseDate": $("#ExpectedReleaseDate").datepicker('getDate') == null ? "" : $("#ExpectedReleaseDate").datepicker('getDate').toLocaleDateString(),
+            //"ReleaseDate": $("#ReleaseDate").datepicker('getDate') == null ? "" : $("#ReleaseDate").datepicker('getDate').toLocaleDateString(),
+            "VersionProgress": $("#VersionProgress").select2("val"),
             "Remarks": $("#Remarks").val()
         }
     };
@@ -116,7 +123,6 @@ function save() {
     });
 }
 
-
 function deleteSingle(id) {
     layer.confirm("是否删除",
         { btn: ["是", "否"] },
@@ -124,6 +130,22 @@ function deleteSingle(id) {
             $.ajax({
                 type: "Post",
                 url: "/SoftwareVersion/DeleteSingle",
+                data: { "id": id },
+                success: function () {
+                    loadSoftwareVersions(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
+};
+
+function release(id) {
+    layer.confirm("是否发布",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/SoftwareVersion/Release",
                 data: { "id": id },
                 success: function () {
                     loadSoftwareVersions(1, 15);

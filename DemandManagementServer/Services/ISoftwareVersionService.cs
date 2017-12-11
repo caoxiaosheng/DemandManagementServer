@@ -10,5 +10,6 @@ namespace DemandManagementServer.Services
         bool AddSoftwareVersion(SoftwareVersionViewModel softwareVersionViewModel, out string reason);
         bool UpdateSoftwareVersion(SoftwareVersionViewModel softwareVersionViewModel, out string reason);
         void DeleteSoftwareVersions(List<int> ids);
+        void ReleaseSoftwareVersions(int id);
     }
 }

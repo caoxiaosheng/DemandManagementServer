@@ -26,8 +26,12 @@ namespace DemandManagementServer.Services
 
         public SoftwareVersionViewModel GetSoftwareVersionById(int id)
         {
-            var softwareVersions = _demandDbContext.SoftwareVersions.SingleOrDefault(item => item.Id == id);
-            return AutoMapper.Mapper.Map<SoftwareVersionViewModel>(softwareVersions);
+            var softwareVersion = _demandDbContext.SoftwareVersions.SingleOrDefault(item => item.Id == id);
+            if (softwareVersion.VersionProgress == VersionProgress.已发布)
+            {
+                return null;
+            }
+            return AutoMapper.Mapper.Map<SoftwareVersionViewModel>(softwareVersion);
         }
 
         public bool AddSoftwareVersion(SoftwareVersionViewModel softwareVersionViewModel, out string reason)
@@ -55,6 +59,11 @@ namespace DemandManagementServer.Services
                 reason = "未查找到该版本";
                 return false;
             }
+            if (softwareVersion.VersionProgress == VersionProgress.已发布)
+            {
+                reason = "已发布版本不允许修改";
+                return false;
+            }
             //仅名称变了 才需要判断重复
             if (softwareVersionViewModel.VersionName != softwareVersion.VersionName)
             {
@@ -70,7 +79,7 @@ namespace DemandManagementServer.Services
             softwareVersion.ExpectedStartDate = newSoftwareVersion.ExpectedStartDate;
             softwareVersion.ExpectedEndDate = newSoftwareVersion.ExpectedEndDate;
             softwareVersion.ExpectedReleaseDate = newSoftwareVersion.ExpectedReleaseDate;
-            softwareVersion.ReleaseDate = newSoftwareVersion.ReleaseDate;
+            //softwareVersion.ReleaseDate = newSoftwareVersion.ReleaseDate;
             softwareVersion.VersionProgress = newSoftwareVersion.VersionProgress;
             softwareVersion.Remarks = newSoftwareVersion.Remarks;
             _demandDbContext.SaveChanges();
@@ -81,13 +90,24 @@ namespace DemandManagementServer.Services
         {
             foreach (var id in ids)
             {
-                var customer = _demandDbContext.SoftwareVersions.SingleOrDefault(item => item.Id == id);
-                if (customer != null)
+                var softwareVersion = _demandDbContext.SoftwareVersions.SingleOrDefault(item => item.Id == id);
+                if (softwareVersion != null)
                 {
-                    customer.IsDeleted = 1;
+                    softwareVersion.IsDeleted = 1;
                 }
             }
             _demandDbContext.SaveChanges();
+        }
+
+        public void ReleaseSoftwareVersions(int id)
+        {
+            var softwareVersion = _demandDbContext.SoftwareVersions.SingleOrDefault(item => item.Id == id);
+            if (softwareVersion != null)
+            {
+                softwareVersion.ReleaseDate=DateTime.Now.Date;
+                softwareVersion.VersionProgress = VersionProgress.已发布;
+                _demandDbContext.SaveChanges();
+            }
         }
     }
 }
