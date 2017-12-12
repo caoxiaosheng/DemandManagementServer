@@ -68,7 +68,7 @@ function add() {
     $("#Id").val(0);
     $("#VersionName").val("");
     $(".datepicker").datepicker('clearDates');
-    $("#VersionProgress").val(null).trigger("change");
+    $("#VersionProgress").val(0).trigger("change");
     $("#Remarks").val("");
     //弹出新增窗体
     $("#addSoftwareVersion").modal("show");
