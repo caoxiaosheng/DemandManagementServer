@@ -29,6 +29,10 @@ namespace DemandManagementServer.DAL
 
         public DbSet<SoftwareVersion> SoftwareVersions { get; set; }
 
+        public DbSet<Demand> Demands { get; set; }
+
+        public DbSet<OperationRecord> OperationRecords { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserRole>().HasKey(userrole => new {userrole.UserId, userrole.RoleId});

@@ -1,8 +1,12 @@
-﻿namespace DemandManagementServer.Models
+﻿using System.Collections.Generic;
+
+namespace DemandManagementServer.Models
 {
     public class Demand
     {
         public int Id { get; set; }
+
+        public string DemandCode { get; set; }
 
         public DemandType DemandType { get; set; }
 
@@ -12,11 +16,17 @@
 
         public int CustomerId { get; set; }
 
+        public int SoftwareVersionId { get; set; }
+
         public DemandPhase DemandPhase { get; set; }
 
         public virtual User User { get; set; }
 
         public virtual Customer Customer { get; set; }
+
+        public virtual List<OperationRecord> OperationRecords { get; set; }
+
+        public virtual SoftwareVersion SoftwareVersion { get; set; }
     }
 
     public enum DemandType
@@ -35,6 +45,4 @@
         打回,
         完成
     }
-    
-
 }
