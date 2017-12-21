@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DemandManagementServer.Models
 {
@@ -19,6 +20,10 @@ namespace DemandManagementServer.Models
         public int SoftwareVersionId { get; set; }
 
         public DemandPhase DemandPhase { get; set; }
+
+        public DateTime CreateTime { get; set; }
+
+        public string Remarks { get; set; }
 
         public virtual User User { get; set; }
 
