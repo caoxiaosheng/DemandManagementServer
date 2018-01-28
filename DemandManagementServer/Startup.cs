@@ -37,6 +37,7 @@ namespace DemandManagementServer
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ISoftwareVersionService, SoftwareVersionService>();
+            services.AddScoped<IDemandService, DemandService>();
 
             services.AddMvc(options =>
             {

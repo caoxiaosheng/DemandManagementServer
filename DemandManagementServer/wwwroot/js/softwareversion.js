@@ -4,7 +4,6 @@
     });
     $("#btnAdd").click(function () { add(); });
     $("#btnSave").click(function () { save(); });
-    $("#btnDelete").click(function () { deleteMulti(); });
     $('.datepicker').datepicker({
         todayBtn: "linked",
         clearBtn: true,
