@@ -22,25 +22,29 @@ function loadDemands(startPage, pageSize) {
             $.each(data.demands,
                 function (i, item) {
                     var tr = "<tr>";
-                    tr += "<td>" + item.versionName + "</td>";
-                    tr += "<td>" + item.expectedStartDate + "</td>";
-                    tr += "<td>" + item.expectedEndDate + "</td>";
-                    tr += "<td>" + item.expectedReleaseDate + "</td>";
-                    tr += "<td>" + (item.versionProgress === 2 ? item.releaseDate : "") + "</td>";
-                    tr += "<td>" + (item.versionProgress === 0 ? "计划阶段" : (item.versionProgress === 1 ? "正在实施" : "已发布")) + "</td>";
-                    tr += "<td>" + (item.isDeleted === 0 ? "<span class='badge badge-success'>正常</span>" : "<span class='badge badge-warning'>禁用</span>") + "</td>";
-                    tr += "<td>" + (item.remarks == null ? "" : item.remarks) + "</td>";
+                    tr += "<td>" + item.demandCode + "</td>";
+                    tr += "<td>" + item.DemandType + "</td>";
+                    tr += "<td>" + item.DemandDetail + "</td>";
+                    tr += "<td>" + item.User + "</td>";
+                    tr += "<td>" + item.Customer + "</td>";
+                    tr += "<td>" + item.CreateTime + "</td>";
+                    tr += "<td>" + "<span class='badge " + item.DemandPhase === "完成"
+                        ? "badge-success"
+                        : (item.DemandPhase === "中止" ? "badge-ignore" : "") + "'>" + item.DemandPhase + "</span>";
+                    tr += "<td>" + item.AlignRecords + "</td>";
+                    tr += "<td>" + item.AnalyseRecords + "</td>";
+                    tr += "<td>" + item.SoftwareVersion + "</td>";
+                    tr += "<td>" + item.ReleaseDate + "</td>";
+                    tr += "<td>" + item.Remarks + "</td>";
                     var editHtml = "<button class='btn btn-info btn-xs' href='javascript:;' onclick='edit(\"" +
                         item.id +
                         "\")'><i class='fa fa-edit'></i> 编辑 </button>";
                     var deleteHtml =
                         "<button class='btn btn-danger btn-xs' href='javascript:;' onclick='deleteSingle(\"" +
                         item.id +
-                        "\")'><i class='fa fa-trash-o'></i> 删除 </button>";
-                    var releaseHtml = "<button class='btn btn-success btn-xs' href='javascript:;' onclick='release(\"" +
-                        item.id +
-                        "\")'><i class='fa fa-send'></i> 发布 </button>";
-                    tr += "<td>" + (item.versionProgress === 2 ? deleteHtml : editHtml + deleteHtml + releaseHtml) + "</td>";
+                        "\")'><i class='fa fa-trash-o'></i> 中止 </button>";
+
+                    tr += "<td>" +  editHtml + deleteHtml+ "</td>";
                     tr += "</tr>";
                     $("#tableBody").append(tr);
                 });
@@ -52,7 +56,7 @@ function loadDemands(startPage, pageSize) {
                     numberOfPages: data.rowsCount, //总数
                     totalPages: data.pageCount, //总页数
                     onPageChanged: function (event, oldPage, newPage) { //页面切换事件
-                        loadSoftwareVersions(newPage, pageSize);
+                        loadDemands(newPage, pageSize);
                     }
                 }
                 elment.bootstrapPaginator(options); //分页插件初始化
