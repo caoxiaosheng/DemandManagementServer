@@ -1,1 +1,65 @@
-﻿
+﻿<div id="addDemand" tabindex="-1" class="modal fade in" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h5 class="box-title" id="Title"></h5>
+                <button class="close" aria-label="Close" type="button" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <form class="form-horizontal">
+                <input type="hidden" id="Id" />
+                <input type="hidden" id="Action" />
+                <div class="box-body">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="DemandCode">需求编号</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" id="DemandCode" type="text" placeholder="需求编号(必填)">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="DemandType">需求类别</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="DemandType" style="width: 100%">
+                                <option value="0">网管</option>
+                                <option value="1">系统</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="DemandDetail">需求描述</label>
+                        <div class="col-sm-10">
+                            <textarea id="DemandDetail" class="form-control" style="resize: vertical" rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="User">提出人</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="User" style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Customer">相关客户</label>
+                        <div class="col-sm-10">
+                            <select class="form-control" id="Customer" style="width: 100%">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="Remarks">备注</label>
+                        <div class="col-sm-10">
+                            <textarea id="Remarks" class="form-control" style="resize: vertical" rows="3"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="pull-right box-tools">
+                        <button id="btnSave" class="btn btn-primary" type="button">保存</button>
+                        <button class="btn btn-default" type="button" data-dismiss="modal">取消</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

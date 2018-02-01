@@ -16,5 +16,7 @@ namespace DemandManagementServer.Services
         bool UpdateUser(UserViewModel userViewModel, out string reason);
         void DeleteUser(int id);
         void DeleteUsers(List<int> ids);
+        List<UserViewModel> GetAllUsers();
+        UserViewModel GetUserByUserName(string userName);
     }
 }

@@ -136,5 +136,17 @@ namespace DemandManagementServer.Services
             }
             _demandDbContext.SaveChanges();
         }
+
+        public List<UserViewModel> GetAllUsers()
+        {
+            var users = _demandDbContext.Users.OrderBy(item => item.Id);
+            return AutoMapper.Mapper.Map<List<UserViewModel>>(users);
+        }
+
+        public UserViewModel GetUserByUserName(string userName)
+        {
+            var user = _demandDbContext.Users.Include(item => item.UserRoles).FirstOrDefault(item => item.UserName == userName);
+            return AutoMapper.Mapper.Map<UserViewModel>(user);
+        }
     }
 }

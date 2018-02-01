@@ -85,5 +85,11 @@ namespace DemandManagementServer.Controllers
         {
             _customerService.DeleteCustomers(ids);
         }
+        
+        public IActionResult GetAllCustomers()
+        {
+            var customers = _customerService.GetAllCustomers();
+            return Json(customers);
+        }
     }
 }

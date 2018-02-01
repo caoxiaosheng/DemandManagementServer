@@ -13,5 +13,6 @@ namespace DemandManagementServer.Services
         bool AddCustomer(CustomerViewModel customerViewModel, out string reason);
         bool UpdateCustomer(CustomerViewModel customerViewModel, out string reason);
         void DeleteCustomers(List<int> ids);
+        List<CustomerViewModel> GetAllCustomers();
     }
 }

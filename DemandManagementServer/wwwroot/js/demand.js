@@ -1,7 +1,5 @@
 ﻿$(function () {
-    $("#VersionProgress").select2({
-        minimumResultsForSearch: Infinity
-    });
+    $("#DemandType").select2({ minimumResultsForSearch: Infinity });
     $("#btnAdd").click(function () { add(); });
     $("#btnSave").click(function () { save(); });
     $('.datepicker').datepicker({
@@ -11,7 +9,52 @@
         autoclose: true
     });
     loadDemands(1, 15);
+    initialUser();
+    initialCustomer();
 });
+
+var currentUserId = "0";
+
+function initialUser() {
+    $.ajax({
+        type: "Get",
+        url: "/User/GetAllUsers",    //获取数据的ajax请求地址
+        async:false,
+        success: function (data) {
+            $("#User").select2({ minimumResultsForSearch: Infinity});
+            var option = "";
+            $.each(data,
+                function (i, item) {
+                    option += "<option value='" + item.id + "'>" + item.name+"("+item.userName+")" + "</option>";
+                });
+            $("#User").html(option);
+        }
+    });
+    $.ajax({
+        type: "Get",
+        url: "/User/GetCurrentUser",    //获取数据的ajax请求地址
+        success: function (data) {
+            currentUserId = data.id.toString();
+            $("#User").val(data.id.toString()).trigger('change');
+        }
+    });
+}
+
+function initialCustomer() {
+    $.ajax({
+        type: "Get",
+        url: "/Customer/GetAllCustomers",    //获取数据的ajax请求地址
+        success: function (data) {
+            $("#Customer").select2({ minimumResultsForSearch: Infinity });
+            var option = "";
+            $.each(data,
+                function (i, item) {
+                    option += "<option value='" + item.id + "'>" + item.name + "</option>";
+                });
+            $("#Customer").html(option);
+        }
+    });
+}
 
 function loadDemands(startPage, pageSize) {
     $("#tableBody").html("");
@@ -63,4 +106,18 @@ function loadDemands(startPage, pageSize) {
             }
         }
     });
+}
+
+function add() {
+    $("#Title").text("新增需求");
+    $("#Action").val("AddDemand");
+    $("#Id").val(0);
+    $("#DemandCode").val("");
+    $("#DemandType").val("0").trigger("change");
+    $("#DemandDetail").val("");
+    $("#User").val(currentUserId).trigger("change");
+    $("#Customer").val("1").trigger("change");
+    $("#Remarks").val("");
+    //弹出新增窗体
+    $("#addDemand").modal("show");
 }

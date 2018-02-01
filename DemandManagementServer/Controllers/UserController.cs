@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
 using DemandManagementServer.Extensions;
 using DemandManagementServer.Services;
 using DemandManagementServer.ViewModels;
@@ -124,6 +126,18 @@ namespace DemandManagementServer.Controllers
         public void DeleteMulti(List<int> ids)
         {
             _userService.DeleteUsers(ids);
+        }
+
+        public IActionResult GetAllUsers()
+        {
+            var users = _userService.GetAllUsers();
+            return Json(users);
+        }
+
+        public IActionResult GetCurrentUser()
+        {
+            var user = _userService.GetUserByUserName(HttpContext.User.Identity.Name);
+            return Json(user);
         }
     }
 }

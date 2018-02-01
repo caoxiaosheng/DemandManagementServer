@@ -88,5 +88,11 @@ namespace DemandManagementServer.Services
             }
             _demandDbContext.SaveChanges();
         }
+
+        public List<CustomerViewModel> GetAllCustomers()
+        {
+            var customers = _demandDbContext.Customers.OrderBy(item => item.Id);
+            return AutoMapper.Mapper.Map<List<CustomerViewModel>>(customers);
+        }
     }
 }
