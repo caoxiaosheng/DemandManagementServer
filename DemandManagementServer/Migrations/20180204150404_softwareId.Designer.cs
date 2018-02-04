@@ -12,9 +12,10 @@ using System;
 namespace DemandManagementServer.Migrations
 {
     [DbContext(typeof(DemandDbContext))]
-    partial class DemandDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180204150404_softwareId")]
+    partial class softwareId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,7 +172,7 @@ namespace DemandManagementServer.Migrations
 
                     b.Property<int>("IsDeleted");
 
-                    b.Property<DateTime?>("ReleaseDate");
+                    b.Property<DateTime>("ReleaseDate");
 
                     b.Property<string>("Remarks");
 

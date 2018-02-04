@@ -27,7 +27,7 @@ namespace DemandManagementServer.Services
         public SoftwareVersionViewModel GetSoftwareVersionById(int id)
         {
             var softwareVersion = _demandDbContext.SoftwareVersions.SingleOrDefault(item => item.Id == id);
-            if (softwareVersion.VersionProgress == VersionProgress.已发布)
+            if (softwareVersion==null||softwareVersion.VersionProgress == VersionProgress.已发布)
             {
                 return null;
             }

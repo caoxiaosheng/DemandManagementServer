@@ -17,7 +17,7 @@ namespace DemandManagementServer.ViewModels
 
         public string Customer { get; set; }
 
-        [JsonConverter(typeof(MyDateConverter))]
+        [JsonConverter(typeof(MyDateTimeConverter))]
         public DateTime? CreateTime { get; set; }
 
         public string DemandPhase { get; set; }
@@ -27,7 +27,7 @@ namespace DemandManagementServer.ViewModels
         public string AnalyseRecords { get; set; }
 
         public string SoftwareVersion { get; set; }
-        
+
         public string ReleaseDate { get; set; }
 
         public string Remarks { get; set; }

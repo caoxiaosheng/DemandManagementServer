@@ -14,7 +14,7 @@ namespace DemandManagementServer.Models
 
         public DateTime ExpectedReleaseDate { get; set; }
 
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         public VersionProgress VersionProgress { get; set; }
 

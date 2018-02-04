@@ -17,7 +17,7 @@ namespace DemandManagementServer.Models
 
         public int CustomerId { get; set; }
 
-        public int SoftwareVersionId { get; set; }
+        public int? SoftwareVersionId { get; set; }
 
         public DemandPhase DemandPhase { get; set; }
 

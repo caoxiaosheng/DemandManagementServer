@@ -27,7 +27,7 @@ namespace DemandManagementServer.ViewModels
 
         [BindNever]
         [JsonConverter(typeof(MyDateConverter))]
-        public DateTime ReleaseDate { get; set; }
+        public DateTime? ReleaseDate { get; set; }
 
         public int VersionProgress { get; set; }
 

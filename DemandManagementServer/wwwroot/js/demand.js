@@ -66,19 +66,19 @@ function loadDemands(startPage, pageSize) {
                 function (i, item) {
                     var tr = "<tr>";
                     tr += "<td>" + item.demandCode + "</td>";
-                    tr += "<td>" + item.DemandType + "</td>";
-                    tr += "<td>" + item.DemandDetail + "</td>";
-                    tr += "<td>" + item.User + "</td>";
-                    tr += "<td>" + item.Customer + "</td>";
-                    tr += "<td>" + item.CreateTime + "</td>";
-                    tr += "<td>" + "<span class='badge " + item.DemandPhase === "完成"
+                    tr += "<td>" + item.demandType + "</td>";
+                    tr += "<td>" + item.demandDetail + "</td>";
+                    tr += "<td>" + item.user + "</td>";
+                    tr += "<td>" + item.customer + "</td>";
+                    tr += "<td>" + item.createTime + "</td>";
+                    tr += "<td>" + "<span class='badge " + (item.demandPhase === "完成"
                         ? "badge-success"
-                        : (item.DemandPhase === "中止" ? "badge-ignore" : "") + "'>" + item.DemandPhase + "</span>";
-                    tr += "<td>" + item.AlignRecords + "</td>";
-                    tr += "<td>" + item.AnalyseRecords + "</td>";
-                    tr += "<td>" + item.SoftwareVersion + "</td>";
-                    tr += "<td>" + item.ReleaseDate + "</td>";
-                    tr += "<td>" + item.Remarks + "</td>";
+                        : (item.DemandPhase === "中止" ? "badge-ignore" : ""))+ "'>" + item.demandPhase + "</span></td>";
+                    tr += "<td>" + item.alignRecords + "</td>";
+                    tr += "<td>" + item.analyseRecords + "</td>";
+                    tr += "<td>" + item.softwareVersion + "</td>";
+                    tr += "<td>" + item.releaseDate + "</td>";
+                    tr += "<td>" + item.remarks + "</td>";
                     var editHtml = "<button class='btn btn-info btn-xs' href='javascript:;' onclick='edit(\"" +
                         item.id +
                         "\")'><i class='fa fa-edit'></i> 编辑 </button>";
@@ -120,4 +120,51 @@ function add() {
     $("#Remarks").val("");
     //弹出新增窗体
     $("#addDemand").modal("show");
+}
+
+function edit(id) {
+    $("#Title").text("编辑需求");
+    $("#Action").val("EditDemand");
+    $.ajax({
+        type: "post",
+        url: "/Demand/GetDemandById?id=" + id,
+        success: function (data) {
+            $("#Id").val(data.id);
+            $("#DemandCode").val(data.demandCode);
+            $("#DemandType").val(data.demandType).trigger("change");
+            $("#DemandDetail").val(data.demandDetail);
+            $("#User").val(data.userId).trigger("change");
+            $("#Customer").val(data.customerId).trigger("change");
+            $("#Remarks").val(data.remarks);
+            //弹出新增窗体
+            $("#addDemand").modal("show");
+        }
+    });
+}
+
+function save() {
+    var postData = {
+        "demandViewModelEdit": {
+            "Id": $("#Id").val(),
+            "DemandCode": $("#DemandCode").val(),
+            "DemandType": $("#DemandType").select2("val"),
+            "DemandDetail": $("#DemandDetail").val(),
+            "UserId": $("#User").select2("val"),
+            "CustomerId": $("#Customer").select2("val"),
+            "Remarks": $("#Remarks").val()
+        }
+    };
+    $.ajax({
+        type: "Post",
+        url: "/Demand/" + $("#Action").val(),
+        data: postData,
+        success: function (data) {
+            if (data.result === true) {
+                loadDemands(1, 15);
+                $("#addDemand").modal("hide");
+            } else {
+                layer.tips(data.reason, "#btnSave");
+            };
+        }
+    });
 }
