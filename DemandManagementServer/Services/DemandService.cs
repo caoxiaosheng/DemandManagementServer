@@ -53,7 +53,7 @@ namespace DemandManagementServer.Services
                 analyseRecordsString.TrimEnd('\n');
                 demandViewModel.AnalyseRecords = analyseRecordsString;
                 demandViewModel.SoftwareVersion = demand.SoftwareVersion==null?"": demand.SoftwareVersion.VersionName;
-                demandViewModel.ReleaseDate= demand.SoftwareVersion == null ?"": (demand.SoftwareVersion.ReleaseDate==null?"": demand.SoftwareVersion.ReleaseDate.ToString());
+                demandViewModel.ReleaseDate= demand.SoftwareVersion?.ReleaseDate;
                 demandViewModel.Remarks = demand.Remarks;
                 demandViewModels.Add(demandViewModel);
             }
@@ -94,12 +94,41 @@ namespace DemandManagementServer.Services
 
         public bool UpdateDemand(DemandViewModelEdit demandViewModelEdit, out string reason)
         {
-            throw new NotImplementedException();
+            reason = string.Empty;
+            var demand = _demandDbContext.Demands.SingleOrDefault(item => item.Id == demandViewModelEdit.Id);
+            if (demand == null)
+            {
+                reason = "未查找到该需求";
+                return false;
+            }
+            //仅名称变了 才需要判断重复
+            if (demandViewModelEdit.DemandCode != demand.DemandCode)
+            {
+                var sameCodeDemand = _demandDbContext.Demands.SingleOrDefault(item => item.DemandCode == demandViewModelEdit.DemandCode);
+                if (sameCodeDemand != null)
+                {
+                    reason = "已存在需求编号：" + sameCodeDemand.DemandCode;
+                    return false;
+                }
+            }
+            demand.DemandCode = demandViewModelEdit.DemandCode;
+            demand.DemandType = (DemandType)demandViewModelEdit.DemandType;
+            demand.DemandDetail = demandViewModelEdit.DemandDetail;
+            demand.UserId = demandViewModelEdit.UserId;
+            demand.CustomerId = demandViewModelEdit.CustomerId;
+            demand.Remarks = demandViewModelEdit.Remarks;
+            _demandDbContext.SaveChanges();
+            return true;
         }
 
-        public void DropDemands(List<int> ids)
+        public void DeleteDemand(int id)
         {
-            throw new NotImplementedException();
+            var demand = _demandDbContext.Demands.SingleOrDefault(item => item.Id == id);
+            if (demand != null && demand.DemandPhase == DemandPhase.需求提出)
+            {
+                _demandDbContext.Demands.Remove(demand);
+                _demandDbContext.SaveChanges();
+            }
         }
     }
 }

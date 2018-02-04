@@ -85,9 +85,9 @@ function loadDemands(startPage, pageSize) {
                     var deleteHtml =
                         "<button class='btn btn-danger btn-xs' href='javascript:;' onclick='deleteSingle(\"" +
                         item.id +
-                        "\")'><i class='fa fa-trash-o'></i> 中止 </button>";
+                        "\")'><i class='fa fa-trash-o'></i> 删除 </button>";
 
-                    tr += "<td>" +  editHtml + deleteHtml+ "</td>";
+                    tr += "<td>" + editHtml + (item.demandPhase === "需求提出"?deleteHtml:"")+ "</td>";
                     tr += "</tr>";
                     $("#tableBody").append(tr);
                 });
@@ -168,3 +168,19 @@ function save() {
         }
     });
 }
+
+function deleteSingle(id) {
+    layer.confirm("是否删除",
+        { btn: ["是", "否"] },
+        function () {
+            $.ajax({
+                type: "Post",
+                url: "/Demand/DeleteSingle",
+                data: { "id": id },
+                success: function () {
+                    loadDemands(1, 15);
+                    layer.closeAll();
+                }
+            });
+        });
+};

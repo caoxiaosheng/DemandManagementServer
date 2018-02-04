@@ -57,5 +57,28 @@ namespace DemandManagementServer.Controllers
                 reason = reason
             });
         }
+
+        public IActionResult EditDemand(DemandViewModelEdit demandViewModelEdit)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return Json(new
+                {
+                    result = false,
+                    reason = ModelState.GetErrorMessage()
+                });
+            }
+            var result = _service.UpdateDemand(demandViewModelEdit, out var reason);
+            return Json(new
+            {
+                result = result,
+                reason = reason
+            });
+        }
+
+        public void DeleteSingle(int id)
+        {
+            _service.DeleteDemand(id);
+        }
     }
 }

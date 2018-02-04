@@ -12,6 +12,6 @@ namespace DemandManagementServer.Services
         DemandViewModelEdit GetDemandById(int id);
         bool AddDemand(DemandViewModelEdit demandViewModelEdit, out string reason);
         bool UpdateDemand(DemandViewModelEdit demandViewModelEdit, out string reason);
-        void DropDemands(List<int> ids);
+        void DeleteDemand(int id);
     }
 }
