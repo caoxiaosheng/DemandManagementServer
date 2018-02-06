@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using DemandManagementServer.Extensions;
 using DemandManagementServer.Services;
 using DemandManagementServer.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.HttpSys;
 
 namespace DemandManagementServer.Controllers
 {
+    [Authorize(AuthenticationSchemes= "Cookies")]
     public class RoleController : Controller
     {
         private readonly IRoleService _roleService;

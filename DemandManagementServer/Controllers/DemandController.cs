@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using DemandManagementServer.Extensions;
 using DemandManagementServer.Services;
 using DemandManagementServer.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemandManagementServer.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Cookies")]
     public class DemandController : Controller
     {
         private readonly IDemandService _service;

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemandManagementServer.Controllers
 {
+    [Authorize(AuthenticationSchemes = "Cookies")]
     public class AccountController : Controller
     {
         private readonly IUserService _userService;
@@ -66,6 +67,7 @@ namespace DemandManagementServer.Controllers
             return RedirectToAction("Login");
         }
 
+        [AllowAnonymous]
         public IActionResult AccessDenied()
         {
             return View();

@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using DemandManagementServer.DAL;
 using DemandManagementServer.Services;
+using IdentityModel;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -13,6 +16,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace DemandManagementServer
 {
@@ -39,24 +43,39 @@ namespace DemandManagementServer
             services.AddScoped<ISoftwareVersionService, SoftwareVersionService>();
             services.AddScoped<IDemandService, DemandService>();
 
-            services.AddMvc(options =>
-            {
-                var policy = new AuthorizationPolicyBuilder()
-                    .RequireAuthenticatedUser()
-                    .Build();
-                options.Filters.Add(new AuthorizeFilter(policy));
-            }).AddJsonOptions(options =>
-            {
-                //options.SerializerSettings.DateFormatString = "yyyy年MM月dd日";
-            });
-
+            //services.AddMvc(options =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //        .RequireAuthenticatedUser()
+            //        .Build();
+            //    options.Filters.Add(new AuthorizeFilter(policy));
+            //}).AddJsonOptions(options =>
+            //{
+            //    //options.SerializerSettings.DateFormatString = "yyyy年MM月dd日";
+            //});
+            services.AddMvc();
             services.AddSession();
 
+            //services.AddAuthentication(options =>
+            //{
+            //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            //}).AddCookie(options =>
+            //{
+            //});
             services.AddAuthentication(options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            }).AddCookie(options =>
+                options.DefaultScheme= CookieAuthenticationDefaults.AuthenticationScheme;
+            }).AddCookie().AddJwtBearer(options =>
             {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    NameClaimType = JwtClaimTypes.Name,
+                    RoleClaimType = JwtClaimTypes.Role,
+
+                    ValidIssuer = "zyc",
+                    ValidAudience = "all",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("miaomiaoo(=•ェ•=)m"))
+                };
             });
         }
 
@@ -70,7 +89,7 @@ namespace DemandManagementServer
             }
             else
             {
-                app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Management/Error");
             }
 
             app.UseStaticFiles();
