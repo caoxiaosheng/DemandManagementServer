@@ -33,6 +33,8 @@ namespace DemandManagementServer.DAL
 
         public DbSet<OperationRecord> OperationRecords { get; set; }
 
+        public DbSet<WxUser> WxUsers { get; set; } 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UserRole>().HasKey(userrole => new {userrole.UserId, userrole.RoleId});

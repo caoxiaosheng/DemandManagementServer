@@ -42,7 +42,7 @@ namespace DemandManagementServer
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ISoftwareVersionService, SoftwareVersionService>();
             services.AddScoped<IDemandService, DemandService>();
-
+            services.AddScoped<IWxUserService, WxUserService>();
             //services.AddMvc(options =>
             //{
             //    var policy = new AuthorizationPolicyBuilder()
@@ -55,7 +55,6 @@ namespace DemandManagementServer
             //});
             services.AddMvc();
             services.AddSession();
-
             //services.AddAuthentication(options =>
             //{
             //    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
@@ -74,7 +73,7 @@ namespace DemandManagementServer
 
                     ValidIssuer = "zyc",
                     ValidAudience = "all",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("miaomiaoo(=•ェ•=)m"))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["jwtkey"]))
                 };
             });
         }
