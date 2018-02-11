@@ -13,5 +13,6 @@ namespace DemandManagementServer.Services
         bool AddDemand(DemandViewModelEdit demandViewModelEdit, out string reason);
         bool UpdateDemand(DemandViewModelEdit demandViewModelEdit, out string reason);
         void DeleteDemand(int id);
+        bool AddDemand(DemandViewModelEditAPI demandViewModelEditApi, out string reason);
     }
 }

@@ -63,7 +63,8 @@ namespace DemandManagementServer.Controllers.API
             return Json(new
             {
                 result=true,
-                access_token = tokenString
+                access_token = tokenString,
+                userName= wxUser.User.UserName
             });
         }
         
@@ -118,7 +119,8 @@ namespace DemandManagementServer.Controllers.API
             {
                 result = true,
                 reason = "",
-                access_token = tokenString
+                access_token = tokenString,
+                userName = user.UserName
             });
         }
 

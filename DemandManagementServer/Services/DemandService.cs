@@ -76,7 +76,7 @@ namespace DemandManagementServer.Services
                 return false;
             }
             Demand newDemand=new Demand();
-            newDemand.Id = demandViewModelEdit.Id;
+            newDemand.Id = 0;
             newDemand.DemandCode = demandViewModelEdit.DemandCode;
             newDemand.DemandType = (DemandType) demandViewModelEdit.DemandType;
             newDemand.DemandDetail = demandViewModelEdit.DemandDetail;
@@ -129,6 +129,44 @@ namespace DemandManagementServer.Services
                 _demandDbContext.Demands.Remove(demand);
                 _demandDbContext.SaveChanges();
             }
+        }
+
+        public bool AddDemand(DemandViewModelEditAPI demandViewModelEditApi, out string reason)
+        {
+            reason = string.Empty;
+            var demand = _demandDbContext.Demands.SingleOrDefault(item => item.DemandCode == demandViewModelEditApi.DemandCode);
+            if (demand != null)
+            {
+                reason = "已存在名称：" + demandViewModelEditApi.DemandCode;
+                return false;
+            }
+            var user = _demandDbContext.Users.SingleOrDefault(item => item.UserName == demandViewModelEditApi.User);
+            if (user == null)
+            {
+                reason = "查找不到该提交人";
+                return false;
+            }
+            var customer =
+                _demandDbContext.Customers.SingleOrDefault(item => item.Name == demandViewModelEditApi.Customer);
+            if (customer == null)
+            {
+                reason = "查找不到该相关客户";
+                return false;
+            }
+            Demand newDemand = new Demand();
+            newDemand.Id = 0;
+            newDemand.DemandCode = demandViewModelEditApi.DemandCode;
+            newDemand.DemandType = (DemandType)demandViewModelEditApi.DemandType;
+            newDemand.DemandDetail = demandViewModelEditApi.DemandDetail;
+            newDemand.UserId = user.Id;
+            newDemand.CustomerId = customer.Id;
+            newDemand.Remarks = demandViewModelEditApi.Remarks;
+            newDemand.DemandPhase = DemandPhase.需求提出;
+            newDemand.CreateTime = DateTime.Now;
+            newDemand.SoftwareVersionId = null;
+            _demandDbContext.Demands.Add(newDemand);
+            _demandDbContext.SaveChanges();
+            return true;
         }
     }
 }
