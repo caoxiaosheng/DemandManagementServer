@@ -48,7 +48,6 @@ namespace DemandManagementServer.Models
         功能开发,
         等待反馈,
         打回,
-        中止,
         完成
     }
 }

@@ -28,8 +28,9 @@ namespace DemandManagementServer.ViewModels
 
         public string SoftwareVersion { get; set; }
 
-        [JsonConverter(typeof(MyDateConverter))]
-        public DateTime? ReleaseDate { get; set; }
+        //[JsonConverter(typeof(MyDateConverter))]
+        //public DateTime? ReleaseDate { get; set; }
+        public string ReleaseDate { get; set; }
 
         public string Remarks { get; set; }
     }

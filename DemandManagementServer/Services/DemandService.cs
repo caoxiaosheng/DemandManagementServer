@@ -24,40 +24,8 @@ namespace DemandManagementServer.Services
             var demands = _demandDbContext.Demands.OrderBy(item => item.Id).Skip((startPage - 1) * pageSize)
                 .Take(pageSize).Include(item => item.User).Include(item => item.Customer)
                 .Include(item => item.SoftwareVersion).Include(item => item.OperationRecords).ToList();
-            List<DemandViewModel> demandViewModels=new List<DemandViewModel>();
-            foreach (var demand in demands)
-            {
-                DemandViewModel demandViewModel=new DemandViewModel();
-                demandViewModel.Id = demand.Id;
-                demandViewModel.DemandCode = demand.DemandCode;
-                demandViewModel.DemandType = demand.DemandType.ToString();
-                demandViewModel.DemandDetail = demand.DemandDetail;
-                demandViewModel.User = demand.User.UserName;
-                demandViewModel.Customer = demand.Customer.Name;
-                demandViewModel.CreateTime = demand.CreateTime;
-                demandViewModel.DemandPhase = demand.DemandPhase.ToString();
-                var alignRecords = demand.OperationRecords.Where(item => item.OperationType == OperationType.需求对齐).OrderBy(item=>item.DateTime);
-                var alignRecordsString = "";
-                foreach (var record in alignRecords)
-                {
-                    alignRecordsString = alignRecordsString + record.DateTime + record.RecordDetail+"\n";
-                }
-                alignRecordsString.TrimEnd('\n');
-                demandViewModel.AlignRecords = alignRecordsString;
-                var analyseRecords = demand.OperationRecords.Where(item => item.OperationType == OperationType.需求分析).OrderBy(item => item.DateTime);
-                var analyseRecordsString = "";
-                foreach (var record in analyseRecords)
-                {
-                    analyseRecordsString = analyseRecordsString + record.DateTime + record.RecordDetail + "\n";
-                }
-                analyseRecordsString.TrimEnd('\n');
-                demandViewModel.AnalyseRecords = analyseRecordsString;
-                demandViewModel.SoftwareVersion = demand.SoftwareVersion==null?"": demand.SoftwareVersion.VersionName;
-                demandViewModel.ReleaseDate= demand.SoftwareVersion?.ReleaseDate;
-                demandViewModel.Remarks = demand.Remarks;
-                demandViewModels.Add(demandViewModel);
-            }
-            return demandViewModels;
+            
+            return CreateDemandViewModels(demands);
         }
 
         public DemandViewModelEdit GetDemandById(int id)
@@ -167,6 +135,78 @@ namespace DemandManagementServer.Services
             _demandDbContext.Demands.Add(newDemand);
             _demandDbContext.SaveChanges();
             return true;
+        }
+
+        public List<DemandViewModel> GetActiveDemands(string userName)
+        {
+            var demands = _demandDbContext.Demands.OrderBy(item => item.Id).Include(item => item.User)
+                .Include(item => item.Customer)
+                .Include(item => item.SoftwareVersion).Include(item => item.OperationRecords)
+                .Where(item => item.User.UserName == userName).Where(item =>
+                    item.DemandPhase == DemandPhase.需求提出 || item.DemandPhase == DemandPhase.需求分析 ||
+                    item.DemandPhase == DemandPhase.版本计划 || item.DemandPhase == DemandPhase.功能开发);
+            return CreateDemandViewModels(demands);
+        }
+
+        public List<DemandViewModel> GetEndDemands(string userName)
+        {
+            var demands = _demandDbContext.Demands.OrderBy(item => item.Id).Include(item => item.User)
+                .Include(item => item.Customer)
+                .Include(item => item.SoftwareVersion).Include(item => item.OperationRecords)
+                .Where(item => item.User.UserName == userName).Where(item =>
+                    item.DemandPhase == DemandPhase.完成 || item.DemandPhase == DemandPhase.打回 ||
+                    item.DemandPhase == DemandPhase.等待反馈);
+            return CreateDemandViewModels(demands);
+        }
+
+        private List<DemandViewModel> CreateDemandViewModels(IEnumerable<Demand> demands)
+        {
+            List<DemandViewModel> demandViewModels = new List<DemandViewModel>();
+            foreach (var demand in demands)
+            {
+                DemandViewModel demandViewModel = new DemandViewModel();
+                demandViewModel.Id = demand.Id;
+                demandViewModel.DemandCode = demand.DemandCode;
+                demandViewModel.DemandType = demand.DemandType.ToString();
+                demandViewModel.DemandDetail = demand.DemandDetail;
+                demandViewModel.User = demand.User.UserName;
+                demandViewModel.Customer = demand.Customer.Name;
+                demandViewModel.CreateTime = demand.CreateTime;
+                demandViewModel.DemandPhase = demand.DemandPhase.ToString();
+                var alignRecords = demand.OperationRecords.Where(item => item.OperationType == OperationType.需求对齐).OrderBy(item => item.DateTime);
+                var alignRecordsString = "";
+                foreach (var record in alignRecords)
+                {
+                    alignRecordsString = alignRecordsString + record.DateTime + record.RecordDetail + "\n";
+                }
+                alignRecordsString.TrimEnd('\n');
+                demandViewModel.AlignRecords = alignRecordsString;
+                var analyseRecords = demand.OperationRecords.Where(item => item.OperationType == OperationType.需求分析).OrderBy(item => item.DateTime);
+                var analyseRecordsString = "";
+                foreach (var record in analyseRecords)
+                {
+                    analyseRecordsString = analyseRecordsString + record.DateTime + record.RecordDetail + "\n";
+                }
+                analyseRecordsString.TrimEnd('\n');
+                demandViewModel.AnalyseRecords = analyseRecordsString;
+                demandViewModel.SoftwareVersion = demand.SoftwareVersion == null ? "" : demand.SoftwareVersion.VersionName;
+                if (demand.SoftwareVersion == null)
+                {
+                    demandViewModel.ReleaseDate = "";
+                }
+                else if (demand.SoftwareVersion.VersionProgress == VersionProgress.已发布)
+                {
+                    demandViewModel.ReleaseDate = demand.SoftwareVersion.ReleaseDate?.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    demandViewModel.ReleaseDate = "(预计)"+demand.SoftwareVersion.ExpectedReleaseDate.ToString("yyyy-MM-dd");
+                }
+                demandViewModel.Remarks = demand.Remarks;
+                demandViewModels.Add(demandViewModel);
+            }
+
+            return demandViewModels;
         }
     }
 }

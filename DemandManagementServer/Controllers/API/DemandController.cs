@@ -26,7 +26,12 @@ namespace DemandManagementServer.Controllers.API
         [Route("api/getactivedemands")]
         public IActionResult GetActiveDemands()
         {
-            return Json(new{A=1,B=2});
+            var userName = HttpContext.User.Identity.Name;
+            var result = _service.GetActiveDemands(userName);
+            return Json(new
+            {
+                demands = result
+            });
         }
 
         [HttpPost]
