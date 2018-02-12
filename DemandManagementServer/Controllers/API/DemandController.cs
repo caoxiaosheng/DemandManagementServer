@@ -34,6 +34,18 @@ namespace DemandManagementServer.Controllers.API
             });
         }
 
+        [HttpGet]
+        [Route("api/getenddemands")]
+        public IActionResult GetEndDemands()
+        {
+            var userName = HttpContext.User.Identity.Name;
+            var result = _service.GetEndDemands(userName);
+            return Json(new
+            {
+                demands = result
+            });
+        }
+
         [HttpPost]
         [Route("api/adddemand")]
         public IActionResult AddDemand([FromBody] DemandViewModelEditAPI demandViewModelEditApi)
